@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion à la page protégée</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #62b5ad, #104f73);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            background-color: #204f73;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: auto;
+        }
+        input {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Connexion</h1>
+    <form id="loginForm">
+        <input type="text" id="username" placeholder="Nom d'utilisateur" required><br>
+        <input type="password" id="password" placeholder="Mot de passe" required><br>
+        <button type="submit">Se connecter</button>
+    </form>
+    <p id="errorMessage" style="color:red; display:none;">Nom d'utilisateur ou mot de passe incorrect</p>
+</div>
+
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Empêcher le formulaire de se soumettre normalement
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        // Nom d'utilisateur et mot de passe corrects
+        const correctUsername = 'monutilisateur';
+        const correctPassword = 'monmotdepasse';
+
+        if (username === correctUsername && password === correctPassword) {
+            // Rediriger vers la page protégée
+            window.location.href = 'index.html'; // Redirection vers ta page protégée
+        } else {
+            // Afficher un message d'erreur
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+    });
+</script>
+
+</body>
+</html>
