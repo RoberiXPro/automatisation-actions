@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automatisation des Actions par Heure</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #62b5ad, #104f73);
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+        }
+        .container {
+            background-color: #204f73;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 10px;
+        }
+        label {
+            font-weight: bold;
+        }
+        select, input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            margin-bottom: 5px;
+        }
+        button {
+		    text-align: center;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        textarea {
+            resize: none;
+            height: auto;
+            min-height: 100px;
+        }
+		 footer {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 14px;
+            color: #dedede;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Automatisation des Actions par Heure</h1>
+    
+    <div class="form-group">
+        <label for="actionType">Choisir l'action :</label>
+        <select id="actionType">
+            <option value="simple">Simple Action</option>
+            <option value="double">Double Action</option>
+            <option value="triple">Triple Action</option>
+        </select>
+    </div>
+
+    <div id="buttonSelection" class="form-group">
+        <label for="firstButton">Choisir premier bouton :</label>
+        <select id="firstButton">
+            <option value="btn-ctrl-pause">Bouton Pause</option>
+            <option value="confirmTakingPause">Confirmation Pause</option>
+            <option value="btn-ctrl-fin">Fin shift</option>
+            <option value="confirmFinShift">Confirm Fin Shift</option>
+            <option value="btn-ctrl-reprise">Reprendre</option>
+        </select>
+    </div>
+
+    <div id="pauseTypeSelection" class="form-group" style="display:none;">
+        <label for="pauseType">Choisir le type de pause :</label>
+        <select id="pauseType">
+            <option value="1">Pause pipi</option>
+            <option value="2">Dejeuner</option>
+            <option value="3">Gouter</option>
+            <option value="4">Panne technique</option>
+            <option value="5">Autres</option>
+            <option value="6">Consultation doc</option>
+            <option value="7">Changement de site</option>
+        </select>
+    </div>
+
+    <!-- Heure exacte pour le premier bouton -->
+    <div class="form-group">
+        <label for="firstButtonTime">Heure exacte pour le premier bouton (HH:MM:SS) :</label>
+        <input type="time" id="firstButtonTime" step="1">
+    </div>
+
+    <div id="secondButtonSelection" class="form-group" style="display:none;">
+        <label for="secondButton">Choisir deuxième bouton :</label>
+        <select id="secondButton">
+            <option value="confirmTakingPause">Confirmation Pause</option>
+            <option value="btn-ctrl-fin">Fin shift</option>
+            <option value="confirmFinShift">Confirm Fin Shift</option>
+            <option value="btn-ctrl-reprise">Reprendre</option>
+        </select>
+    </div>
+
+    <!-- Heure exacte pour le deuxième bouton -->
+    <div id="secondButtonTimeSelection" class="form-group" style="display:none;">
+        <label for="secondButtonTime">Heure exacte pour le deuxième bouton (HH:MM:SS) :</label>
+        <input type="time" id="secondButtonTime" step="1">
+    </div>
+
+    <div id="thirdButtonSelection" class="form-group" style="display:none;">
+        <label for="thirdButton">Choisir troisième bouton :</label>
+        <select id="thirdButton">
+            <option value="btn-ctrl-reprise">Reprendre</option>
+            <option value="confirmFinShift">Confirm Fin Shift</option>
+        </select>
+    </div>
+
+    <!-- Heure exacte pour le troisième bouton -->
+    <div id="thirdButtonTimeSelection" class="form-group" style="display:none;">
+        <label for="thirdButtonTime">Heure exacte pour le troisième bouton (HH:MM:SS) :</label>
+        <input type="time" id="thirdButtonTime" step="1">
+    </div>
+
+    <button id="generateCodeBtn">Générer le code</button>
+
+    <div class="form-group">
+        <label for="generatedCode">Code généré ici:</label>
+        <textarea id="generatedCode" readonly></textarea>
+    </div>
+
+    <button id="copyCodeBtn">Copier</button>
+
+</div>
+
+<script>
+    const actionType = document.getElementById('actionType');
+    const firstButton = document.getElementById('firstButton');
+    const pauseTypeSelection = document.getElementById('pauseTypeSelection');
+    const secondButtonSelection = document.getElementById('secondButtonSelection');
+    const secondButtonTimeSelection = document.getElementById('secondButtonTimeSelection');
+    const thirdButtonSelection = document.getElementById('thirdButtonSelection');
+    const thirdButtonTimeSelection = document.getElementById('thirdButtonTimeSelection');
+    const generateCodeBtn = document.getElementById('generateCodeBtn');
+    const generatedCode = document.getElementById('generatedCode');
+    const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+    actionType.addEventListener('change', function() {
+        const action = this.value;
+
+        if (action === 'simple') {
+            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'none' : 'none';
+            secondButtonSelection.style.display = 'none';
+            secondButtonTimeSelection.style.display = 'none';
+            thirdButtonSelection.style.display = 'none';
+            thirdButtonTimeSelection.style.display = 'none';
+        } else if (action === 'double') {
+            secondButtonSelection.style.display = 'block';
+            secondButtonTimeSelection.style.display = 'block';
+            thirdButtonSelection.style.display = 'none';
+            thirdButtonTimeSelection.style.display = 'none';
+            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'block' : 'none';
+        } else if (action === 'triple') {
+            secondButtonSelection.style.display = 'block';
+            secondButtonTimeSelection.style.display = 'block';
+            thirdButtonSelection.style.display = 'block';
+            thirdButtonTimeSelection.style.display = 'block';
+            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'block' : 'none';
+        }
+    });
+
+    firstButton.addEventListener('change', function() {
+        const action = actionType.value;
+        if (this.value === 'btn-ctrl-pause') {
+            pauseTypeSelection.style.display = action !== 'simple' ? 'block' : 'none';
+        } else {
+            pauseTypeSelection.style.display = 'none';
+        }
+    });
+
+    generateCodeBtn.addEventListener('click', function() {
+        const action = actionType.value;
+        const firstButtonId = firstButton.value;
+        const firstButtonTime = document.getElementById('firstButtonTime').value;
+        const pauseType = document.getElementById('pauseType').value;
+        let code = `var firstButtonTime = new Date();\nfirstButtonTime.setHours(..."${firstButtonTime}".split(':'));\n`;
+        code += `setTimeout(function() {\n    var firstButton = document.getElementById("${firstButtonId}");\n`;
+
+        if (firstButtonId === 'btn-ctrl-pause' && action !== 'simple') {
+            code += `    firstButton.click();\n`;
+            code += `    document.getElementById('pause_libelle').value = "${pauseType}";\n`;
+        } else {
+            code += `    firstButton.click();\n`;
+        }
+
+        code += `    console.log("Premier bouton cliqué");\n}, firstButtonTime.getTime() - new Date().getTime());\n`;
+
+        if (action === 'double' || action === 'triple') {
+            const secondButtonId = document.getElementById('secondButton').value;
+            const secondButtonTime = document.getElementById('secondButtonTime').value;
+            code += `var secondButtonTime = new Date();\nsecondButtonTime.setHours(..."${secondButtonTime}".split(':'));\n`;
+            code += `setTimeout(function() {\n    var secondButton = document.getElementById("${secondButtonId}");\n    secondButton.click();\n    console.log("Deuxième bouton cliqué");\n}, secondButtonTime.getTime() - new Date().getTime());\n`;
+        }
+
+        if (action === 'triple') {
+            const thirdButtonId = document.getElementById('thirdButton').value;
+            const thirdButtonTime = document.getElementById('thirdButtonTime').value;
+            code += `var thirdButtonTime = new Date();\nthirdButtonTime.setHours(..."${thirdButtonTime}".split(':'));\n`;
+            code += `setTimeout(function() {\n    var thirdButton = document.getElementById("${thirdButtonId}");\n    thirdButton.click();\n    console.log("Troisième bouton cliqué");\n}, thirdButtonTime.getTime() - new Date().getTime());\n`;
+        }
+
+        generatedCode.value = code;
+    });
+
+    copyCodeBtn.addEventListener('click', function() {
+        generatedCode.select();
+        document.execCommand('copy');
+        alert('Cliqueo le OK pour confirmer le copie!');
+    });
+</script>
+
+<!-- Section pour l'extinction du PC avec champ "HH:MM:SS" -->
+<div class="container">
+    <h2>Programmer l'extinction du PC</h2>
+
+    <!-- Heure exacte pour l'extinction du PC -->
+    <div class="form-group">
+        <label for="shutdownTime">Heure exacte pour l'extinction (HH:MM:SS) :</label>
+        <input type="time" id="shutdownTime" step="1">
+    </div>
+
+    <button id="generateShutdownCodeBtn">Générer le code d'extinction</button>
+
+    <div class="form-group">
+        <label for="shutdownCode">Code généré :</label>
+        <textarea id="shutdownCode" readonly></textarea>
+    </div>
+
+    <button id="copyShutdownCodeBtn">Copier le code d'extinction</button>
+</div>
+
+<script>
+    // Générer le code d'extinction du PC basé sur l'écart de temps entre l'heure actuelle et celle entrée
+    const generateShutdownCodeBtn = document.getElementById('generateShutdownCodeBtn');
+    const shutdownCode = document.getElementById('shutdownCode');
+    const shutdownTimeInput = document.getElementById('shutdownTime');
+    
+    generateShutdownCodeBtn.addEventListener('click', function() {
+        const now = new Date(); // Heure actuelle
+        const shutdownTime = shutdownTimeInput.value; // Heure saisie par l'utilisateur
+
+        // Si l'utilisateur n'a pas entré d'heure, sortir
+        if (!shutdownTime) {
+            alert("Veuillez entrer une heure pour l'extinction.");
+            return;
+        }
+
+        // Récupérer l'heure, les minutes et les secondes de l'heure entrée par l'utilisateur
+        const timeParts = shutdownTime.split(':');
+        const shutdownDate = new Date();
+        shutdownDate.setHours(timeParts[0]);
+        shutdownDate.setMinutes(timeParts[1]);
+        shutdownDate.setSeconds(timeParts[2]);
+
+        // Calculer la différence entre l'heure actuelle et l'heure de shutdown (en millisecondes)
+        const timeDifference = shutdownDate.getTime() - now.getTime();
+
+        // Si l'heure entrée est antérieure à l'heure actuelle (même jour), alerter l'utilisateur
+        if (timeDifference <= 0) {
+            alert("L'heure d'extinction doit être après l'heure actuelle.");
+            return;
+        }
+
+        // Convertir la différence en secondes
+        const totalSeconds = Math.floor(timeDifference / 1000);
+
+        // Générer la commande d'extinction
+        const shutdownCommand = `shutdown -s -t ${totalSeconds}`;
+        shutdownCode.value = shutdownCommand;
+    });
+
+    // Copier le code d'extinction
+    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
+    
+    copyShutdownCodeBtn.addEventListener('click', function() {
+        shutdownCode.select();
+        document.execCommand('copy');
+        alert('Le code d\'extinction a été copié dans le presse-papiers.');
+    });
+</script>
+
+<div class="container">
+    <h2>Génération de Script Tampermonkey</h2>
+
+    <!-- Champ pour entrer le login et le mot de passe -->
+    <div class="form-group">
+        <label for="tampermonkeyLogin">Login :</label>
+        <input type="text" id="tampermonkeyLogin" placeholder="Entrer le login">
+    </div>
+
+    <div class="form-group">
+        <label for="tampermonkeyPassword">Mot de passe (texte visible) :</label>
+        <input type="text" id="tampermonkeyPassword" placeholder="Entrer le mot de passe">
+    </div>
+
+    <!-- Champ pour définir la date, heure, minute et seconde pour saisir le login et le mot de passe -->
+    <div class="form-group">
+        <label for="loginDate">Date pour saisir le Login et le Mot de passe :</label>
+        <input type="date" id="loginDate">
+    </div>
+    <div class="form-group">
+        <label for="loginTime">Heure pour saisir le Login et le Mot de passe (HH:MM:SS) :</label>
+        <input type="time" id="loginTime" step="1">
+    </div>
+
+    <!-- Champ pour définir la date, heure, minute et seconde pour soumettre le formulaire -->
+    <div class="form-group">
+        <label for="submitDate">Date pour soumettre le formulaire :</label>
+        <input type="date" id="submitDate">
+    </div>
+    <div class="form-group">
+        <label for="submitTime">Heure pour soumettre le formulaire (HH:MM:SS) :</label>
+        <input type="time" id="submitTime" step="1">
+    </div>
+
+    <!-- Champ pour définir la date, heure, minute et seconde pour cliquer sur le bouton d'action -->
+    <div class="form-group">
+        <label for="actionDate">Date pour cliquer sur le bouton d'action :</label>
+        <input type="date" id="actionDate">
+    </div>
+    <div class="form-group">
+        <label for="actionTime">Heure pour cliquer sur le bouton d'action (HH:MM:SS) :</label>
+        <input type="time" id="actionTime" step="1">
+    </div>
+
+    <!-- Liste déroulante pour choisir le bouton d'action -->
+    <div class="form-group">
+        <label for="actionButton">Nom du bouton d'action :</label>
+        <select id="actionButton">
+            <option value="btn-ctrl-pause">Pause</option>
+            <option value="confirmTakingPause">Confirmation Pause</option>
+            <option value="btn-ctrl-reprise">Reprise</option>
+            <option value="btn-ctrl-fin">Fin de Shift</option>
+            <option value="confirmFinShift">Confirmation Fin de Shift</option>
+            <option value="btn-activity-debut">Démarrer une tâche</option>
+        </select>
+    </div>
+
+    <!-- Bouton pour générer le script -->
+    <button id="generateTampermonkeyCodeBtn">Générer le script Tampermonkey</button>
+
+    <!-- Zone de texte pour afficher le code généré -->
+    <div class="form-group">
+        <label for="tampermonkeyCode">Code généré :</label>
+        <textarea id="tampermonkeyCode" readonly></textarea>
+    </div>
+
+    <!-- Bouton pour copier le code généré -->
+    <button id="copyTampermonkeyCodeBtn">Copier le code</button>
+</div>
+
+<script>
+    const generateTampermonkeyCodeBtn = document.getElementById('generateTampermonkeyCodeBtn');
+    const tampermonkeyCode = document.getElementById('tampermonkeyCode');
+    const copyTampermonkeyCodeBtn = document.getElementById('copyTampermonkeyCodeBtn');
+    const tampermonkeyLogin = document.getElementById('tampermonkeyLogin');
+    const tampermonkeyPassword = document.getElementById('tampermonkeyPassword');
+    const loginDate = document.getElementById('loginDate');
+    const loginTime = document.getElementById('loginTime');
+    const submitDate = document.getElementById('submitDate');
+    const submitTime = document.getElementById('submitTime');
+    const actionDate = document.getElementById('actionDate');
+    const actionTime = document.getElementById('actionTime');
+    const actionButton = document.getElementById('actionButton');
+
+    function getTimeDifference(date, time) {
+        const now = new Date();
+        const targetDateTime = new Date(date + 'T' + time);
+
+        const difference = targetDateTime - now;
+        return difference > 0 ? difference : 0;
+    }
+
+    generateTampermonkeyCodeBtn.addEventListener('click', function() {
+        const login = tampermonkeyLogin.value;
+        const password = tampermonkeyPassword.value;
+        const loginDateTime = getTimeDifference(loginDate.value, loginTime.value);
+        const submitDateTime = getTimeDifference(submitDate.value, submitTime.value);
+        const actionDateTime = getTimeDifference(actionDate.value, actionTime.value);
+        const actionButtonValue = actionButton.value;
+
+        if (!login || !password || !loginDateTime || !submitDateTime || !actionDateTime || !actionButtonValue) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
+
+        // Créer le script Tampermonkey avec les champs personnalisés
+        let code = `// ==UserScript==\n`;
+        code += `// @name         Auto Login and Start Task\n`;
+        code += `// @namespace    http://tampermonkey.net/\n`;
+        code += `// @version      1.0\n`;
+        code += `// @description  Auto login and start task on time tracking system\n`;
+        code += `// @author       You\n`;
+        code += `// @match        http://192.168.0.247/time-tracking/index.php/auth/login\n`;
+        code += `// @match        http://192.168.0.247/time-tracking/index.php/dashboard/index\n`;
+        code += `// @grant        none\n`;
+        code += `// ==/UserScript==\n\n`;
+        code += `(function() {\n`;
+        code += `    'use strict';\n\n`;
+        code += `    // Définir le login et le mot de passe\n`;
+        code += `    const username = '${login}';\n`;
+        code += `    const password = '${password}';\n\n`;
+
+        // Ajouter la logique pour saisir le login et le mot de passe à l'heure exacte
+        code += `    // Si nous sommes sur la page de connexion\n`;
+        code += `    if (window.location.href.includes("auth/login")) {\n`;
+        code += `        const loginCheckInterval = setInterval(() => {\n`;
+        code += `            const now = new Date();\n`;
+        code += `            const loginTarget = new Date('${loginDate.value}T${loginTime.value}');\n`;
+        code += `            if (now >= loginTarget) {\n`;
+        code += `                document.querySelector('input[name="tt_username"]').value = username;\n`;
+        code += `                document.querySelector('input[name="tt_pwd"]').value = password;\n`;
+        code += `                clearInterval(loginCheckInterval);\n`; // Stop the interval after login is done
+        code += `            }\n`;
+        code += `        }, 1000); // Vérifier toutes les secondes\n\n`;
+
+        // Ajouter la logique pour soumettre le formulaire à l'heure exacte
+        code += `        const submitCheckInterval = setInterval(() => {\n`;
+        code += `            const now = new Date();\n`;
+        code += `            const submitTarget = new Date('${submitDate.value}T${submitTime.value}');\n`;
+        code += `            if (now >= submitTarget) {\n`;
+        code += `                document.querySelector('.login100-form-btn').click();\n`;
+        code += `                clearInterval(submitCheckInterval);\n`; // Stop the interval after submission
+        code += `            }\n`;
+        code += `        }, 1000);\n`;
+        code += `    }\n\n`;
+
+        // Ajouter la logique pour cliquer sur le bouton d'action à l'heure exacte
+        code += `    // Si nous sommes sur le dashboard où le bouton d'action est présent\n`;
+        code += `    if (window.location.href.includes("dashboard/index")) {\n`;
+        code += `        const actionCheckInterval = setInterval(() => {\n`;
+        code += `            const now = new Date();\n`;
+        code += `            const actionTarget = new Date('${actionDate.value}T${actionTime.value}');\n`;
+        code += `            if (now >= actionTarget) {\n`;
+        code += `                document.querySelector('#${actionButtonValue}').click();\n`;
+        code += `                clearInterval(actionCheckInterval);\n`; // Stop the interval after action is done
+        code += `            }\n`;
+        code += `        }, 1000);\n`;
+        code += `    }\n`;
+        code += `})();\n`;
+
+        tampermonkeyCode.value = code;
+    });
+
+    // Copier le code généré
+    copyTampermonkeyCodeBtn.addEventListener('click', function() {
+        tampermonkeyCode.select();
+        document.execCommand('copy');
+        alert('Le script Tampermonkey a été copié dans le presse-papiers.');
+    });
+</script>
+
+
+
+<footer>By RoberiX-2024</footer>
+</body>
+</html>
