@@ -550,20 +550,21 @@
     </div>
 
     <div class="readme-block">
-        <div class="readme-block-title">Exemple – Double action</div>
-        <p><strong>Objectif :</strong> démarrer et arrêter une pause automatiquement.</p>
-        <p><strong>Scénario :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li>lancer la pause à <strong>18:30:00</strong>,</li>
-            <li>arrêter la pause à <strong>18:35:00</strong>.</li>
-        </ul>
-        <p><strong>Dans l’outil, tu choisis :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li><strong>Type d'automatisation</strong> : Double action</li>
-            <li><strong>1. Premier bouton</strong> : Bouton Pause (#PauseToggleBtn) → Heure : <strong>18:30:00</strong></li>
-            <li><strong>2. Deuxième bouton</strong> : Bouton Pause (#PauseToggleBtn) → Heure : <strong>18:35:00</strong></li>
-        </ul>
-        <p><strong>Résultat :</strong> à 18h30 la pause démarre, à 18h35 le même bouton est recliqué pour stopper la pause.</p>
+        <div class="readme-block-title">Exemple – Triple action</div>
+Exemple concret avec tes 3 blocs :
+Supposons que ton planning du jour soit :
+11h00–15h00 → Production
+15h00–16h00 → Pause déjeuner
+16h00–20h00 → Production
+Tu peux faire dans l’outil :
+Type d’action : Triple
+1er bouton : Bouton Play (tâche visible) → heure : 11:00:00
+2e bouton : Bouton Play (tâche visible) → heure : 15:00:00
+3e bouton : Bouton Play (tâche visible) → heure : 16:00:00
+Résultat :
+11h00 → il clique sur le Play visible → ça lance la 1ère Production
+15h00 → à ce moment-là, le Play visible sera sur Pause déjeuner → ça lance la pause
+16h00 → le Play visible sera sur la Production suivante → ça lance la prod
     </div>
 </div>
         </div>
@@ -933,5 +934,6 @@
 </script>
 </body>
 </html>
+
 
 
