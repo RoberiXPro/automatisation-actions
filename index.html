@@ -511,8 +511,8 @@
             <div class="readme-grid">
                 <div class="readme-block">
                     <div class="readme-block-title">1. Étapes générales</div>
-                    <p>1️⃣ Ouvre la page de suivi temps (là où il y a Fin de production / Pause / Play).</p>
-                    <p>2️⃣ Ouvre la console Chrome : <span class="kbd">F12</span> → onglet <span class="kbd">Console</span>.</p>
+                    <p>1️⃣ Ouvre la page de Time Tracking (là où il y a le bouton Fin de production, les boutons Play).</p>
+                    <p>2️⃣ En restant sur la page Time tracking, appuyer le bouton F12 du clavier pour Ouvrir la fenetre de la console Chrome : <span class="kbd">F12</span> → onglet <span class="kbd">Console</span>.</p>
                     <p>3️⃣ Dans ton outil, configure :</p>
                     <ul style="margin:4px 0 4px 18px;padding-left:0;">
                         <li style="margin-bottom:2px;">le type d'action (simple / double / triple),</li>
@@ -535,73 +535,90 @@
                     </div>
                 </div>
             </div>
+<div class="readme-grid" style="margin-top:10px;">
+    <div class="readme-block">
+        <div class="readme-block-title">Exemple – Simple action</div>
+        <p><strong>Objectif :</strong> lancer automatiquement une petite pause.</p>
+        <p><strong>Scénario :</strong> tu veux que le bouton <strong>Pause</strong> soit cliqué à <strong>18:30:00</strong>.</p>
+        <p><strong>Dans l’outil, tu choisis :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li><strong>Type d'automatisation</strong> : Simple action</li>
+            <li><strong>1. Premier bouton</strong> : Bouton Pause (#PauseToggleBtn)</li>
+            <li><strong>Heure</strong> : 18:30:00</li>
+        </ul>
+        <p><strong>Résultat :</strong> à 18h30, l’outil clique sur le bouton Pause une fois (comme si tu avais cliqué toi-même).</p>
+    </div>
 
-            <div class="readme-grid" style="margin-top:10px;">
-                <div class="readme-block">
-                    <div class="readme-block-title">Exemple – Simple action</div>
-                    <p>👉 Lancer le bouton Pause à 18:30:00</p>
-                    <div class="readme-code">
-<pre>var firstButtonTime = new Date();
-firstButtonTime.setHours(... "18:30:00".split(':'));
-setTimeout(function() {
-    var btn = document.getElementById("PauseToggleBtn");
-    if (btn) {
-        btn.click();
-        console.log("Pause lancée");
-    }
-}, firstButtonTime.getTime() - new Date().getTime());</pre>
-                    </div>
-                </div>
+    <div class="readme-block">
+        <div class="readme-block-title">Exemple – Double action</div>
+        <p><strong>Objectif :</strong> démarrer et arrêter une pause automatiquement.</p>
+        <p><strong>Scénario :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li>lancer la pause à <strong>18:30:00</strong>,</li>
+            <li>arrêter la pause à <strong>18:35:00</strong>.</li>
+        </ul>
+        <p><strong>Dans l’outil, tu choisis :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li><strong>Type d'automatisation</strong> : Double action</li>
+            <li><strong>1. Premier bouton</strong> : Bouton Pause (#PauseToggleBtn) → Heure : <strong>18:30:00</strong></li>
+            <li><strong>2. Deuxième bouton</strong> : Bouton Pause (#PauseToggleBtn) → Heure : <strong>18:35:00</strong></li>
+        </ul>
+        <p><strong>Résultat :</strong> à 18h30 la pause démarre, à 18h35 le même bouton est recliqué pour stopper la pause.</p>
+    </div>
+</div>
+<div class="readme-grid" style="margin-top:10px;">
+    <div class="readme-block">
+        <div class="readme-block-title">Exemple – Triple action (Play sur 3 blocs)</div>
+        <p><strong>Objectif :</strong> enchaîner automatiquement les tâches de la journée avec le bouton Play.</p>
+        <p><strong>Supposons que ton planning soit :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li>11h00–15h00 → <strong>Production</strong></li>
+            <li>15h00–16h00 → <strong>Pause déjeuner</strong></li>
+            <li>16h00–20h00 → <strong>Production</strong></li>
+        </ul>
+        <p>Le bouton Play se déplace à chaque fois :</p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li>au début : sur la première Production,</li>
+            <li>après clic : il passe sur Pause déjeuner,</li>
+            <li>après re-clic : il passe sur la Production suivante, etc.</li>
+        </ul>
+        <p><strong>Dans l’outil, tu choisis :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li><strong>Type d'automatisation</strong> : Triple action</li>
+            <li><strong>1. Premier bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>11:00:00</strong></li>
+            <li><strong>2. Deuxième bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>15:00:00</strong></li>
+            <li><strong>3. Troisième bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>16:00:00</strong></li>
+        </ul>
+        <p><strong>Résultat :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li>11h00 → le Play visible est cliqué → la première Production démarre,</li>
+            <li>15h00 → le nouveau Play visible (Pause déjeuner) est cliqué → la pause démarre,</li>
+            <li>16h00 → le Play visible sur la Production suivante est cliqué → reprise de la prod.</li>
+        </ul>
+        <p>Tu n'as jamais besoin de choisir l'ID de la tâche : l'outil clique toujours sur le Play <strong>visible</strong> dans le planning.</p>
+    </div>
 
-                <div class="readme-block">
-                    <div class="readme-block-title">Exemple – Double action</div>
-                    <p>👉 Démarrer la pause à 18:30:00, la stopper à 18:35:00</p>
-                    <div class="readme-code">
-<pre>var firstButtonTime = new Date();
-firstButtonTime.setHours(... "18:30:00".split(':'));
-setTimeout(function() {
-    document.getElementById("PauseToggleBtn")?.click();
-}, firstButtonTime.getTime() - new Date().getTime());
+    <div class="readme-block">
+        <div class="readme-block-title">Exemple – Fin de production</div>
+        <p><strong>Objectif :</strong> terminer automatiquement ta production avec validation du message de confirmation.</p>
+        <p><strong>Scénario :</strong> tu veux que le bouton <strong>Fin de production</strong> soit cliqué à <strong>20:00:00</strong> et que le “OK” du message box soit validé automatiquement.</p>
+        <p><strong>Dans l’outil, tu choisis par exemple :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li><strong>Type d'automatisation</strong> : Simple action</li>
+            <li><strong>1. Premier bouton</strong> : Fin de production (#finProdBtn)</li>
+            <li><strong>Heure</strong> : 20:00:00</li>
+        </ul>
+        <p><strong>Résultat :</strong></p>
+        <ul style="margin:4px 0 4px 18px;padding-left:0;">
+            <li>à 20h00, l’outil clique sur <strong>Fin de production</strong>,</li>
+            <li>le message “OK / Annuler” est automatiquement validé (comme si tu avais cliqué sur OK),</li>
+            <li>puis le comportement normal de la fenêtre de confirmation est restauré après quelques secondes.</li>
+        </ul>
+        <p>Tu n’as rien d’autre à faire que laisser la page ouverte et le script se charger du reste.</p>
+    </div>
+</div>
 
-var secondButtonTime = new Date();
-secondButtonTime.setHours(... "18:35:00".split(':'));
-setTimeout(function() {
-    document.getElementById("PauseToggleBtn")?.click();
-}, secondButtonTime.getTime() - new Date().getTime());</pre>
-                    </div>
-                </div>
-            </div>
 
-            <div class="readme-grid" style="margin-top:10px;">
-                <div class="readme-block">
-                    <div class="readme-block-title">Exemple – Triple action (Play)</div>
-                    <p>👉 Enchaîner Play sur trois tâches :</p>
-                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
-                        <li>Play à 16:00:00 → Production</li>
-                        <li>Play à 20:00:00 → Pause déjeuner</li>
-                        <li>Play à 21:00:00 → Production suivante</li>
-                    </ul>
-                    <p>Dans l'outil :</p>
-                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
-                        <li>Type : Triple action</li>
-                        <li>Boutons 1/2/3 : Bouton Play (tâche visible)</li>
-                        <li>Heures : 16:00:00 / 20:00:00 / 21:00:00</li>
-                    </ul>
-                    <p>Le Play sera toujours cliqué sur la tâche “en attente / visible” dans le planning.</p>
-                </div>
-
-                <div class="readme-block">
-                    <div class="readme-block-title">Fin de production & message box</div>
-                    <p>Le bouton <strong>Fin de production</strong> affiche une boîte de confirmation (“OK / Annuler”).</p>
-                    <p>Le script généré par l'outil :</p>
-                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
-                        <li>clique sur <span class="kbd">#finProdBtn</span>,</li>
-                        <li>force <span class="kbd">window.confirm()</span> à renvoyer <strong>true</strong> pendant 10 secondes,</li>
-                        <li>puis restaure le comportement normal.</li>
-                    </ul>
-                    <p>➡️ Pas besoin de cliquer sur OK : c'est auto-validé.</p>
-                </div>
-            </div>
         </div>
     </section>
 
@@ -969,3 +986,4 @@ setTimeout(function() {
 </script>
 </body>
 </html>
+
