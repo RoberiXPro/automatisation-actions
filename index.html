@@ -566,59 +566,6 @@
         <p><strong>Résultat :</strong> à 18h30 la pause démarre, à 18h35 le même bouton est recliqué pour stopper la pause.</p>
     </div>
 </div>
-<div class="readme-grid" style="margin-top:10px;">
-    <div class="readme-block">
-        <div class="readme-block-title">Exemple – Triple action (Play sur 3 blocs)</div>
-        <p><strong>Objectif :</strong> enchaîner automatiquement les tâches de la journée avec le bouton Play.</p>
-        <p><strong>Supposons que ton planning soit :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li>11h00–15h00 → <strong>Production</strong></li>
-            <li>15h00–16h00 → <strong>Pause déjeuner</strong></li>
-            <li>16h00–20h00 → <strong>Production</strong></li>
-        </ul>
-        <p>Le bouton Play se déplace à chaque fois :</p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li>au début : sur la première Production,</li>
-            <li>après clic : il passe sur Pause déjeuner,</li>
-            <li>après re-clic : il passe sur la Production suivante, etc.</li>
-        </ul>
-        <p><strong>Dans l’outil, tu choisis :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li><strong>Type d'automatisation</strong> : Triple action</li>
-            <li><strong>1. Premier bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>11:00:00</strong></li>
-            <li><strong>2. Deuxième bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>15:00:00</strong></li>
-            <li><strong>3. Troisième bouton</strong> : Bouton Play (tâche visible) → Heure : <strong>16:00:00</strong></li>
-        </ul>
-        <p><strong>Résultat :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li>11h00 → le Play visible est cliqué → la première Production démarre,</li>
-            <li>15h00 → le nouveau Play visible (Pause déjeuner) est cliqué → la pause démarre,</li>
-            <li>16h00 → le Play visible sur la Production suivante est cliqué → reprise de la prod.</li>
-        </ul>
-        <p>Tu n'as jamais besoin de choisir l'ID de la tâche : l'outil clique toujours sur le Play <strong>visible</strong> dans le planning.</p>
-    </div>
-
-    <div class="readme-block">
-        <div class="readme-block-title">Exemple – Fin de production</div>
-        <p><strong>Objectif :</strong> terminer automatiquement ta production avec validation du message de confirmation.</p>
-        <p><strong>Scénario :</strong> tu veux que le bouton <strong>Fin de production</strong> soit cliqué à <strong>20:00:00</strong> et que le “OK” du message box soit validé automatiquement.</p>
-        <p><strong>Dans l’outil, tu choisis par exemple :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li><strong>Type d'automatisation</strong> : Simple action</li>
-            <li><strong>1. Premier bouton</strong> : Fin de production (#finProdBtn)</li>
-            <li><strong>Heure</strong> : 20:00:00</li>
-        </ul>
-        <p><strong>Résultat :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li>à 20h00, l’outil clique sur <strong>Fin de production</strong>,</li>
-            <li>le message “OK / Annuler” est automatiquement validé (comme si tu avais cliqué sur OK),</li>
-            <li>puis le comportement normal de la fenêtre de confirmation est restauré après quelques secondes.</li>
-        </ul>
-        <p>Tu n’as rien d’autre à faire que laisser la page ouverte et le script se charger du reste.</p>
-    </div>
-</div>
-
-
         </div>
     </section>
 
@@ -986,4 +933,5 @@
 </script>
 </body>
 </html>
+
 
