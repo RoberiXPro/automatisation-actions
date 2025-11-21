@@ -3,164 +3,561 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automatisation des Actions par Heure</title>
+    <title>Outil d'automatisation – RoberiX</title>
     <style>
+        :root {
+            --bg: #050816;
+            --bg-card: #0b1020;
+            --bg-card-soft: #11172a;
+            --accent: #4f46e5;
+            --accent-soft: rgba(79, 70, 229, 0.15);
+            --accent-gradient: linear-gradient(135deg, #4f46e5, #22c55e);
+            --text: #f9fafb;
+            --text-soft: #9ca3af;
+            --border-subtle: rgba(148, 163, 184, 0.25);
+            --danger: #ef4444;
+            --danger-soft: rgba(239, 68, 68, 0.15);
+            --radius-lg: 18px;
+            --radius-md: 10px;
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
+            --input-bg: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(to right, #62b5ad, #104f73);
-            color: #fff;
-            padding: 20px;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top, #1d243a 0, #050816 45%);
+            color: var(--text);
+            padding: 24px;
             margin: 0;
         }
 
-        h1, h2 {
-            text-align: center;
+        .page-shell {
+            max-width: 1040px;
+            margin: 0 auto;
         }
 
-        .container {
-            background-color: #204f73;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-            max-width: 800px;
-            margin: 20px auto;
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
         }
 
-        .form-group {
+        .title-block h1 {
+            margin: 0;
+            font-size: 1.7rem;
+            letter-spacing: .03em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .title-pill {
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .16em;
+            padding: 4px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border-subtle);
+            color: var(--text-soft);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 8px rgba(34, 197, 94, .7);
+        }
+
+        .title-block p {
+            margin: 6px 0 0;
+            font-size: .9rem;
+            color: var(--text-soft);
+        }
+
+        .header-badge {
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: rgba(15,23,42,.85);
+            border: 1px solid rgba(148,163,184,.35);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: .8rem;
+            color: var(--text-soft);
+        }
+
+        .header-badge span.tag {
+            padding: 3px 8px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            color: #e5e7ff;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .card {
+            background: radial-gradient(circle at top, rgba(79,70,229,.18), transparent 55%), var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 20px 18px 18px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-secondary {
+            background: radial-gradient(circle at top, rgba(34,197,94,.18), transparent 55%), var(--bg-card-soft);
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            background: radial-gradient(circle at top, rgba(59,130,246,0.07), transparent 55%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .card-inner {
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .card-title-icon {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: var(--accent-soft);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: .85rem;
+        }
+
+        .card-subtitle {
+            font-size: .8rem;
+            color: var(--text-soft);
+        }
+
+        .pill {
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: .7rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            border: 1px solid rgba(148,163,184,.4);
+            color: var(--text-soft);
+        }
+
+        .pill-accent {
+            border-color: rgba(79,70,229,.6);
+            background: rgba(79,70,229,.06);
+            color: #c7d2ff;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr) minmax(0, .9fr);
+            gap: 10px;
             margin-bottom: 10px;
         }
 
+        .form-row.single {
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr);
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
         label {
-            font-weight: bold;
+            font-size: .8rem;
+            font-weight: 500;
+            color: var(--text-soft);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
         }
 
-        select, input, textarea {
+        label span.hint {
+            font-size: .7rem;
+            color: #6b7280;
+            font-weight: 400;
+        }
+
+        select, input[type="time"] {
             width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            border: none;
+            padding: 8px 9px;
+            margin-top: 4px;
+            border-radius: 10px;
+            border: 1px solid rgba(148,163,184,0.45);
+            background: var(--input-bg);
+            color: var(--text);
+            font-size: .85rem;
+            outline: none;
+            transition: border .18s ease, box-shadow .18s ease, background .18s ease, transform .08s ease;
         }
 
-        button {
-            text-align: center;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 4px;
-        }
-
-        button:hover {
-            background-color: #0056b3;
+        select:focus, input[type="time"]:focus, input[type="time"]:hover, select:hover {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(79,70,229,.4);
+            background: #020617;
         }
 
         textarea {
-            resize: none;
-            height: auto;
-            min-height: 100px;
+            width: 100%;
+            padding: 10px 11px;
+            margin-top: 4px;
+            border-radius: 12px;
+            border: 1px solid rgba(148,163,184,0.45);
+            background: #020617;
+            color: var(--text);
+            font-size: .8rem;
+            resize: vertical;
+            min-height: 120px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px rgba(79,70,229,.4);
+        }
+
+        .btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 6px;
+        }
+
+        .btn {
+            border-radius: 999px;
+            border: none;
+            padding: 8px 16px;
+            font-size: .8rem;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform .08s ease, box-shadow .18s ease, background .18s ease, opacity .12s ease;
+        }
+
+        .btn-primary {
+            background-image: var(--accent-gradient);
+            color: #f9fafb;
+            box-shadow: 0 10px 30px rgba(79,70,229,.55);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(148,163,184,.5);
+            color: var(--text-soft);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 14px 40px rgba(79,70,229,.7);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(15,23,42,.9);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        .badge-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: .7rem;
+            color: var(--text-soft);
+        }
+
+        .badge-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            background: #22c55e;
+        }
+
+        .section-divider {
+            height: 1px;
+            width: 100%;
+            background: radial-gradient(circle, rgba(148,163,184,.7), transparent 70%);
+            margin: 18px 0 14px;
+        }
+
+        .kbd {
+            background: rgba(15,23,42, .9);
+            border-radius: 6px;
+            border: 1px solid rgba(148,163,184,.6);
+            padding: 2px 6px;
+            font-size: .7rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        .hint-line {
+            font-size: .75rem;
+            color: var(--text-soft);
+            margin-top: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hint-pill {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,.4);
+            padding: 2px 8px;
+            font-size: .7rem;
         }
 
         footer {
             text-align: center;
-            margin-top: 20px;
-            padding: 10px;
-            font-size: 14px;
-            color: #dedede;
+            margin-top: 12px;
+            padding: 8px;
+            font-size: .75rem;
+            color: var(--text-soft);
+            opacity: .8;
         }
     </style>
 </head>
 <body>
+<div class="page-shell">
 
-<!-- ===================================================== -->
-<!-- 1. AUTOMATISATION DES ACTIONS PAR HEURE (JS SIMPLE)   -->
-<!-- ===================================================== -->
-<div class="container">
-    <h1>Automatisation des Actions par Heure</h1>
-    
-    <div class="form-group">
-        <label for="actionType">Choisir l'action :</label>
-        <select id="actionType">
-            <option value="simple">Simple Action</option>
-            <option value="double">Double Action</option>
-            <option value="triple">Triple Action</option>
-        </select>
-    </div>
+    <header class="header">
+        <div class="title-block">
+            <div class="title-pill">
+                <span class="status-dot"></span>
+                <span>Automation studio</span>
+            </div>
+            <h1>
+                Outil d'automatisation
+            </h1>
+            <p>Programme des clics sur tes boutons (Fin prod, Pause, Play) à l'heure exacte, sans prise de tête.</p>
+        </div>
+        <div class="header-badge">
+            <span class="tag">Live</span>
+            <span>Colle le JS généré dans la console du navigateur.</span>
+        </div>
+    </header>
 
-    <!-- Premier bouton -->
-    <div id="buttonSelection" class="form-group">
-        <label for="firstButton">Choisir premier bouton :</label>
-        <select id="firstButton">
-            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
-        </select>
-    </div>
+    <main class="grid">
+        <!-- ============ CARD 1 : CLICS PROGRAMMÉS ============ -->
+        <section class="card">
+            <div class="card-inner">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">
+                            <span class="card-title-icon">⚙️</span>
+                            Programmation des clics
+                        </div>
+                        <div class="card-subtitle">
+                            Choisis le type d'action, les boutons, et les heures. Je te génère le script JS.
+                        </div>
+                    </div>
+                    <span class="pill pill-accent">FinProd · Pause · Play</span>
+                </div>
 
-    <div class="form-group" id="firstPlanningIdGroup" style="display:none;">
-        <label for="firstPlanningId">ID de la tâche (data-planning-id) - 1er bouton :</label>
-        <input type="text" id="firstPlanningId" placeholder="Ex : 440475">
-    </div>
+                <div class="form-group">
+                    <label for="actionType">
+                        Type d'automatisation
+                        <span class="hint">Simple = 1 clic, Double = 2, Triple = 3</span>
+                    </label>
+                    <select id="actionType">
+                        <option value="simple">Simple action</option>
+                        <option value="double">Double action</option>
+                        <option value="triple">Triple action</option>
+                    </select>
+                </div>
 
-    <div class="form-group">
-        <label for="firstButtonTime">Heure exacte pour le premier bouton (HH:MM:SS) :</label>
-        <input type="time" id="firstButtonTime" step="1">
-    </div>
+                <div class="section-divider"></div>
 
-    <!-- Deuxième bouton -->
-    <div id="secondButtonSelection" class="form-group" style="display:none;">
-        <label for="secondButton">Choisir deuxième bouton :</label>
-        <select id="secondButton">
-            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
-        </select>
-    </div>
+                <!-- Ligne 1 -->
+                <div class="form-row single">
+                    <div class="form-group">
+                        <label for="firstButton">1. Premier bouton</label>
+                        <select id="firstButton">
+                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstButtonTime">Heure (HH:MM:SS)</label>
+                        <input type="time" id="firstButtonTime" step="1">
+                    </div>
+                </div>
 
-    <div class="form-group" id="secondPlanningIdGroup" style="display:none;">
-        <label for="secondPlanningId">ID de la tâche (data-planning-id) - 2e bouton :</label>
-        <input type="text" id="secondPlanningId" placeholder="Ex : 440476">
-    </div>
+                <!-- Ligne 2 -->
+                <div id="secondButtonSelection" class="form-row single" style="display:none;">
+                    <div class="form-group">
+                        <label for="secondButton">2. Deuxième bouton</label>
+                        <select id="secondButton">
+                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                        </select>
+                    </div>
+                    <div id="secondButtonTimeSelection" class="form-group">
+                        <label for="secondButtonTime">Heure (HH:MM:SS)</label>
+                        <input type="time" id="secondButtonTime" step="1">
+                    </div>
+                </div>
 
-    <div id="secondButtonTimeSelection" class="form-group" style="display:none;">
-        <label for="secondButtonTime">Heure exacte pour le deuxième bouton (HH:MM:SS) :</label>
-        <input type="time" id="secondButtonTime" step="1">
-    </div>
+                <!-- Ligne 3 -->
+                <div id="thirdButtonSelection" class="form-row single" style="display:none;">
+                    <div class="form-group">
+                        <label for="thirdButton">3. Troisième bouton</label>
+                        <select id="thirdButton">
+                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                        </select>
+                    </div>
+                    <div id="thirdButtonTimeSelection" class="form-group">
+                        <label for="thirdButtonTime">Heure (HH:MM:SS)</label>
+                        <input type="time" id="thirdButtonTime" step="1">
+                    </div>
+                </div>
 
-    <!-- Troisième bouton -->
-    <div id="thirdButtonSelection" class="form-group" style="display:none;">
-        <label for="thirdButton">Choisir troisième bouton :</label>
-        <select id="thirdButton">
-            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
-        </select>
-    </div>
+                <div class="btn-row">
+                    <button id="generateCodeBtn" class="btn btn-primary">
+                        <span>⚡ Générer le script JS</span>
+                    </button>
+                </div>
 
-    <div class="form-group" id="thirdPlanningIdGroup" style="display:none;">
-        <label for="thirdPlanningId">ID de la tâche (data-planning-id) - 3e bouton :</label>
-        <input type="text" id="thirdPlanningId" placeholder="Ex : 440474">
-    </div>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label for="generatedCode">
+                        Code généré
+                        <span class="badge-inline">
+                            <span class="badge-dot"></span>
+                            <span>Coller dans la console (F12 &gt; Console)</span>
+                        </span>
+                    </label>
+                    <textarea id="generatedCode" readonly placeholder="// Le code apparaîtra ici après génération"></textarea>
+                    <div class="btn-row">
+                        <button id="copyCodeBtn" class="btn btn-ghost">
+                            <span>📋 Copier le code</span>
+                        </button>
+                    </div>
+                    <div class="hint-line">
+                        <span class="hint-pill">Tip</span>
+                        <span>Ouvre la page de suivi temps, F12 &gt; Console, colle le script, Enter.</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-    <div id="thirdButtonTimeSelection" class="form-group" style="display:none;">
-        <label for="thirdButtonTime">Heure exacte pour le troisième bouton (HH:MM:SS) :</label>
-        <input type="time" id="thirdButtonTime" step="1">
-    </div>
+        <!-- ============ CARD 2 : EXTINCTION PC ============ -->
+        <section class="card card-secondary">
+            <div class="card-inner">
+                <div class="card-header">
+                    <div>
+                        <div class="card-title">
+                            <span class="card-title-icon">💻</span>
+                            Extinction programmée du PC
+                        </div>
+                        <div class="card-subtitle">
+                            Génère la commande Windows <code class="kbd">shutdown</code> à coller dans le terminal / Exécuter.
+                        </div>
+                    </div>
+                    <span class="pill">Windows only</span>
+                </div>
 
-    <button id="generateCodeBtn">Générer le code</button>
+                <div class="form-group">
+                    <label for="shutdownTime">
+                        Heure d'extinction
+                        <span class="hint">Même jour, format 24h</span>
+                    </label>
+                    <input type="time" id="shutdownTime" step="1">
+                </div>
 
-    <div class="form-group">
-        <label for="generatedCode">Code généré ici:</label>
-        <textarea id="generatedCode" readonly></textarea>
-    </div>
+                <div class="btn-row">
+                    <button id="generateShutdownCodeBtn" class="btn btn-primary">
+                        <span>⏱ Générer la commande</span>
+                    </button>
+                </div>
 
-    <button id="copyCodeBtn">Copier</button>
+                <div class="form-group" style="margin-top: 10px;">
+                    <label for="shutdownCode">
+                        Commande générée
+                        <span class="badge-inline">
+                            <span class="badge-dot" style="background: var(--danger);"></span>
+                            <span>À utiliser avec précaution</span>
+                        </span>
+                    </label>
+                    <textarea id="shutdownCode" readonly placeholder="shutdown -s -t 3600"></textarea>
+                    <div class="btn-row">
+                        <button id="copyShutdownCodeBtn" class="btn btn-ghost">
+                            <span>📋 Copier la commande</span>
+                        </button>
+                    </div>
+                    <div class="hint-line">
+                        <span class="hint-pill">Utilisation</span>
+                        <span>
+                            <span class="kbd">Win + R</span> → tape la commande → <span class="kbd">Entrée</span>.
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>By RoberiX-2025 · Automation playground</footer>
 </div>
 
 <script>
+    // === Références DOM principales ===
     const actionType = document.getElementById('actionType');
     const firstButton = document.getElementById('firstButton');
     const secondButton = document.getElementById('secondButton');
@@ -175,31 +572,13 @@
     const generatedCode = document.getElementById('generatedCode');
     const copyCodeBtn = document.getElementById('copyCodeBtn');
 
-    const firstPlanningIdGroup = document.getElementById('firstPlanningIdGroup');
-    const secondPlanningIdGroup = document.getElementById('secondPlanningIdGroup');
-    const thirdPlanningIdGroup = document.getElementById('thirdPlanningIdGroup');
+    const generateShutdownCodeBtn = document.getElementById('generateShutdownCodeBtn');
+    const shutdownCode = document.getElementById('shutdownCode');
+    const shutdownTimeInput = document.getElementById('shutdownTime');
+    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
 
-    function updatePlanningIdVisibility() {
-        if (firstButton.value === 'playreelbutton') {
-            firstPlanningIdGroup.style.display = 'block';
-        } else {
-            firstPlanningIdGroup.style.display = 'none';
-        }
-
-        if (secondButton.value === 'playreelbutton') {
-            secondPlanningIdGroup.style.display = 'block';
-        } else {
-            secondPlanningIdGroup.style.display = 'none';
-        }
-
-        if (thirdButton.value === 'playreelbutton') {
-            thirdPlanningIdGroup.style.display = 'block';
-        } else {
-            thirdPlanningIdGroup.style.display = 'none';
-        }
-    }
-
-    actionType.addEventListener('change', function() {
+    // === Gestion du type d'action (simple / double / triple) ===
+    actionType.addEventListener('change', function () {
         const action = this.value;
 
         if (action === 'simple') {
@@ -208,38 +587,30 @@
             thirdButtonSelection.style.display = 'none';
             thirdButtonTimeSelection.style.display = 'none';
         } else if (action === 'double') {
-            secondButtonSelection.style.display = 'block';
+            secondButtonSelection.style.display = 'flex';
             secondButtonTimeSelection.style.display = 'block';
             thirdButtonSelection.style.display = 'none';
             thirdButtonTimeSelection.style.display = 'none';
         } else if (action === 'triple') {
-            secondButtonSelection.style.display = 'block';
+            secondButtonSelection.style.display = 'flex';
             secondButtonTimeSelection.style.display = 'block';
-            thirdButtonSelection.style.display = 'block';
+            thirdButtonSelection.style.display = 'flex';
             thirdButtonTimeSelection.style.display = 'block';
         }
-
-        updatePlanningIdVisibility();
     });
 
-    firstButton.addEventListener('change', updatePlanningIdVisibility);
-    secondButton.addEventListener('change', updatePlanningIdVisibility);
-    thirdButton.addEventListener('change', updatePlanningIdVisibility);
-
-    generateCodeBtn.addEventListener('click', function() {
+    // === Génération du script JS pour les clics programmés ===
+    generateCodeBtn.addEventListener('click', function () {
         const action = actionType.value;
 
         const firstButtonId = firstButton.value;
         const firstButtonTimeVal = document.getElementById('firstButtonTime').value;
-        const firstPlanningId = document.getElementById('firstPlanningId').value;
 
-        const secondButtonId = document.getElementById('secondButton').value;
+        const secondButtonId = secondButton.value;
         const secondButtonTimeVal = document.getElementById('secondButtonTime').value;
-        const secondPlanningId = document.getElementById('secondPlanningId').value;
 
-        const thirdButtonId = document.getElementById('thirdButton').value;
+        const thirdButtonId = thirdButton.value;
         const thirdButtonTimeVal = document.getElementById('thirdButtonTime').value;
-        const thirdPlanningId = document.getElementById('thirdPlanningId').value;
 
         if (!firstButtonTimeVal) {
             alert("Veuillez saisir l'heure du premier bouton.");
@@ -256,141 +627,70 @@
             return;
         }
 
-        if (firstButtonId === 'playreelbutton' && !firstPlanningId) {
-            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le premier bouton Play.");
-            return;
-        }
-        if ((action === 'double' || action === 'triple') && secondButtonId === 'playreelbutton' && !secondPlanningId) {
-            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le deuxième bouton Play.");
-            return;
-        }
-        if (action === 'triple' && thirdButtonId === 'playreelbutton' && !thirdPlanningId) {
-            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le troisième bouton Play.");
-            return;
-        }
-
         let code = '';
 
-        // -------- Premier bouton --------
-        code += `var firstButtonTime = new Date();\n`;
-        code += `firstButtonTime.setHours(... "${firstButtonTimeVal}".split(':'));\n`;
-        code += `setTimeout(function() {\n`;
+        // Helper : génération d'un bloc setTimeout pour un bouton donné
+        function addClickBlock(which, btnId, timeVal) {
+            code += `var ${which}Time = new Date();\n`;
+            code += `${which}Time.setHours(... "${timeVal}".split(':'));\n`;
+            code += `setTimeout(function() {\n`;
 
-        if (firstButtonId === 'playreelbutton') {
-            const sel = `li.planning-item[data-planning-id="${firstPlanningId}"] .playreelbutton`;
-            code += `    var firstButton = document.querySelector('${sel}');\n`;
-            code += `    if (firstButton) {\n`;
-            code += `        firstButton.click();\n`;
-            code += `        console.log("Premier bouton Play cliqué (planning-id ${firstPlanningId})");\n`;
-            code += `    } else {\n`;
-            code += `        console.log("Premier bouton Play introuvable (planning-id ${firstPlanningId})");\n`;
-            code += `    }\n`;
-        } else {
-            code += `    var firstButton = document.getElementById("${firstButtonId}");\n`;
-            code += `    if (firstButton) {\n`;
-            code += `        firstButton.click();\n`;
-            code += `        console.log("Premier bouton cliqué (#${firstButtonId})");\n`;
-            code += `    } else {\n`;
-            code += `        console.log("Premier bouton introuvable (#${firstButtonId})");\n`;
-            code += `    }\n`;
+            if (btnId === 'playreelbutton') {
+                // On clique sur le bouton Play visible (celui qui n'est pas display:none)
+                code += `    var btns = document.querySelectorAll('.playreelbutton');\n`;
+                code += `    var targetBtn = null;\n`;
+                code += `    for (var i = 0; i < btns.length; i++) {\n`;
+                code += `        if (btns[i].offsetParent !== null) { targetBtn = btns[i]; break; }\n`;
+                code += `    }\n`;
+                code += `    if (targetBtn) {\n`;
+                code += `        targetBtn.click();\n`;
+                code += `        console.log("${which} : bouton Play visible cliqué");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("${which} : aucun bouton Play visible trouvé");\n`;
+                code += `    }\n`;
+            } else {
+                // Bouton ciblé par ID (FinProd, Pause)
+                code += `    var btn = document.getElementById("${btnId}");\n`;
+                code += `    if (btn) {\n`;
+                code += `        btn.click();\n`;
+                code += `        console.log("${which} : bouton cliqué (#${btnId})");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("${which} : bouton introuvable (#${btnId})");\n`;
+                code += `    }\n`;
+            }
+
+            code += `}, ${which}Time.getTime() - new Date().getTime());\n\n`;
         }
 
-        code += `}, firstButtonTime.getTime() - new Date().getTime());\n\n`;
+        // Premier bouton
+        addClickBlock('firstButton', firstButtonId, firstButtonTimeVal);
 
-        // -------- Deuxième bouton --------
+        // Deuxième bouton
         if (action === 'double' || action === 'triple') {
-            code += `var secondButtonTime = new Date();\n`;
-            code += `secondButtonTime.setHours(... "${secondButtonTimeVal}".split(':'));\n`;
-            code += `setTimeout(function() {\n`;
-
-            if (secondButtonId === 'playreelbutton') {
-                const sel2 = `li.planning-item[data-planning-id="${secondPlanningId}"] .playreelbutton`;
-                code += `    var secondButton = document.querySelector('${sel2}');\n`;
-                code += `    if (secondButton) {\n`;
-                code += `        secondButton.click();\n`;
-                code += `        console.log("Deuxième bouton Play cliqué (planning-id ${secondPlanningId})");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("Deuxième bouton Play introuvable (planning-id ${secondPlanningId})");\n`;
-                code += `    }\n`;
-            } else {
-                code += `    var secondButton = document.getElementById("${secondButtonId}");\n`;
-                code += `    if (secondButton) {\n`;
-                code += `        secondButton.click();\n`;
-                code += `        console.log("Deuxième bouton cliqué (#${secondButtonId})");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("Deuxième bouton introuvable (#${secondButtonId})");\n`;
-                code += `    }\n`;
-            }
-
-            code += `}, secondButtonTime.getTime() - new Date().getTime());\n\n`;
+            addClickBlock('secondButton', secondButtonId, secondButtonTimeVal);
         }
 
-        // -------- Troisième bouton --------
+        // Troisième bouton
         if (action === 'triple') {
-            code += `var thirdButtonTime = new Date();\n`;
-            code += `thirdButtonTime.setHours(... "${thirdButtonTimeVal}".split(':'));\n`;
-            code += `setTimeout(function() {\n`;
-
-            if (thirdButtonId === 'playreelbutton') {
-                const sel3 = `li.planning-item[data-planning-id="${thirdPlanningId}"] .playreelbutton`;
-                code += `    var thirdButton = document.querySelector('${sel3}');\n`;
-                code += `    if (thirdButton) {\n`;
-                code += `        thirdButton.click();\n`;
-                code += `        console.log("Troisième bouton Play cliqué (planning-id ${thirdPlanningId})");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("Troisième bouton Play introuvable (planning-id ${thirdPlanningId})");\n`;
-                code += `    }\n`;
-            } else {
-                code += `    var thirdButton = document.getElementById("${thirdButtonId}");\n`;
-                code += `    if (thirdButton) {\n`;
-                code += `        thirdButton.click();\n`;
-                code += `        console.log("Troisième bouton cliqué (#${thirdButtonId})");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("Troisième bouton introuvable (#${thirdButtonId})");\n`;
-                code += `    }\n`;
-            }
-
-            code += `}, thirdButtonTime.getTime() - new Date().getTime());\n\n`;
+            addClickBlock('thirdButton', thirdButtonId, thirdButtonTimeVal);
         }
 
         generatedCode.value = code;
     });
 
-    copyCodeBtn.addEventListener('click', function() {
+    // === Copie du code généré ===
+    copyCodeBtn.addEventListener('click', function () {
+        if (!generatedCode.value.trim()) {
+            alert("Aucun code à copier pour l'instant.");
+            return;
+        }
         generatedCode.select();
         document.execCommand('copy');
-        alert('Cliqueo le OK pour confirmer le copie!');
+        alert('Code copié dans le presse-papiers. Tu peux le coller dans la console.');
     });
-</script>
 
-<!-- ===================================================== -->
-<!-- 2. PROGRAMMATION EXTINCTION PC                        -->
-<!-- ===================================================== -->
-<div class="container">
-    <h2>Programmer l'extinction du PC</h2>
-
-    <div class="form-group">
-        <label for="shutdownTime">Heure exacte pour l'extinction (HH:MM:SS) :</label>
-        <input type="time" id="shutdownTime" step="1">
-    </div>
-
-    <button id="generateShutdownCodeBtn">Générer le code d'extinction</button>
-
-    <div class="form-group">
-        <label for="shutdownCode">Code généré :</label>
-        <textarea id="shutdownCode" readonly></textarea>
-    </div>
-
-    <button id="copyShutdownCodeBtn">Copier le code d'extinction</button>
-</div>
-
-<script>
-    const generateShutdownCodeBtn = document.getElementById('generateShutdownCodeBtn');
-    const shutdownCode = document.getElementById('shutdownCode');
-    const shutdownTimeInput = document.getElementById('shutdownTime');
-    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
-    
-    generateShutdownCodeBtn.addEventListener('click', function() {
+    // === Génération de la commande d'extinction ===
+    generateShutdownCodeBtn.addEventListener('click', function () {
         const now = new Date();
         const shutdownTime = shutdownTimeInput.value;
 
@@ -403,7 +703,7 @@
         const shutdownDate = new Date();
         shutdownDate.setHours(timeParts[0]);
         shutdownDate.setMinutes(timeParts[1]);
-        shutdownDate.setSeconds(timeParts[2]);
+        shutdownDate.setSeconds(timeParts[2] || 0);
 
         const timeDifference = shutdownDate.getTime() - now.getTime();
 
@@ -417,13 +717,16 @@
         shutdownCode.value = shutdownCommand;
     });
 
-    copyShutdownCodeBtn.addEventListener('click', function() {
+    // === Copie de la commande d'extinction ===
+    copyShutdownCodeBtn.addEventListener('click', function () {
+        if (!shutdownCode.value.trim()) {
+            alert("Aucune commande à copier pour l'instant.");
+            return;
+        }
         shutdownCode.select();
         document.execCommand('copy');
-        alert('Le code d\'extinction a été copié dans le presse-papiers.');
+        alert('La commande a été copiée dans le presse-papiers.');
     });
 </script>
-<footer>By RoberiX-2025</footer>
 </body>
 </html>
-
