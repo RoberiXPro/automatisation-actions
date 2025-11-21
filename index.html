@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,47 +13,58 @@
             margin: 0;
         }
 
-        h1 {
+        h1, h2 {
             text-align: center;
         }
+
         .container {
             background-color: #204f73;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
             max-width: 800px;
-            margin: auto;
+            margin: 20px auto;
         }
+
         .form-group {
             margin-bottom: 10px;
         }
+
         label {
             font-weight: bold;
         }
+
         select, input, textarea {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
             margin-bottom: 5px;
+            border-radius: 4px;
+            border: none;
         }
+
         button {
-		    text-align: center;
+            text-align: center;
             padding: 10px 20px;
             background-color: #007bff;
             color: white;
             border: none;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            border-radius: 4px;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         textarea {
             resize: none;
             height: auto;
             min-height: 100px;
         }
-		 footer {
+
+        footer {
             text-align: center;
             margin-top: 20px;
             padding: 10px;
@@ -64,6 +75,9 @@
 </head>
 <body>
 
+<!-- ===================================================== -->
+<!-- 1. AUTOMATISATION DES ACTIONS PAR HEURE (JS SIMPLE)   -->
+<!-- ===================================================== -->
 <div class="container">
     <h1>Automatisation des Actions par Heure</h1>
     
@@ -76,61 +90,61 @@
         </select>
     </div>
 
+    <!-- Premier bouton -->
     <div id="buttonSelection" class="form-group">
         <label for="firstButton">Choisir premier bouton :</label>
         <select id="firstButton">
-            <option value="btn-ctrl-pause">Bouton Pause</option>
-            <option value="confirmTakingPause">Confirmation Pause</option>
-            <option value="btn-ctrl-fin">Fin shift</option>
-            <option value="confirmFinShift">Confirm Fin Shift</option>
-            <option value="btn-ctrl-reprise">Reprendre</option>
+            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
         </select>
     </div>
 
-    <div id="pauseTypeSelection" class="form-group" style="display:none;">
-        <label for="pauseType">Choisir le type de pause :</label>
-        <select id="pauseType">
-            <option value="1">Pause pipi</option>
-            <option value="2">Dejeuner</option>
-            <option value="3">Gouter</option>
-            <option value="4">Panne technique</option>
-            <option value="5">Autres</option>
-            <option value="6">Consultation doc</option>
-            <option value="7">Changement de site</option>
-        </select>
+    <div class="form-group" id="firstPlanningIdGroup" style="display:none;">
+        <label for="firstPlanningId">ID de la tâche (data-planning-id) - 1er bouton :</label>
+        <input type="text" id="firstPlanningId" placeholder="Ex : 440475">
     </div>
 
-    <!-- Heure exacte pour le premier bouton -->
     <div class="form-group">
         <label for="firstButtonTime">Heure exacte pour le premier bouton (HH:MM:SS) :</label>
         <input type="time" id="firstButtonTime" step="1">
     </div>
 
+    <!-- Deuxième bouton -->
     <div id="secondButtonSelection" class="form-group" style="display:none;">
         <label for="secondButton">Choisir deuxième bouton :</label>
         <select id="secondButton">
-            <option value="confirmTakingPause">Confirmation Pause</option>
-            <option value="btn-ctrl-fin">Fin shift</option>
-            <option value="confirmFinShift">Confirm Fin Shift</option>
-            <option value="btn-ctrl-reprise">Reprendre</option>
+            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
         </select>
     </div>
 
-    <!-- Heure exacte pour le deuxième bouton -->
+    <div class="form-group" id="secondPlanningIdGroup" style="display:none;">
+        <label for="secondPlanningId">ID de la tâche (data-planning-id) - 2e bouton :</label>
+        <input type="text" id="secondPlanningId" placeholder="Ex : 440476">
+    </div>
+
     <div id="secondButtonTimeSelection" class="form-group" style="display:none;">
         <label for="secondButtonTime">Heure exacte pour le deuxième bouton (HH:MM:SS) :</label>
         <input type="time" id="secondButtonTime" step="1">
     </div>
 
+    <!-- Troisième bouton -->
     <div id="thirdButtonSelection" class="form-group" style="display:none;">
         <label for="thirdButton">Choisir troisième bouton :</label>
         <select id="thirdButton">
-            <option value="btn-ctrl-reprise">Reprendre</option>
-            <option value="confirmFinShift">Confirm Fin Shift</option>
+            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
+            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+            <option value="playreelbutton">Bouton Play (tâche planifiée)</option>
         </select>
     </div>
 
-    <!-- Heure exacte pour le troisième bouton -->
+    <div class="form-group" id="thirdPlanningIdGroup" style="display:none;">
+        <label for="thirdPlanningId">ID de la tâche (data-planning-id) - 3e bouton :</label>
+        <input type="text" id="thirdPlanningId" placeholder="Ex : 440474">
+    </div>
+
     <div id="thirdButtonTimeSelection" class="form-group" style="display:none;">
         <label for="thirdButtonTime">Heure exacte pour le troisième bouton (HH:MM:SS) :</label>
         <input type="time" id="thirdButtonTime" step="1">
@@ -144,26 +158,51 @@
     </div>
 
     <button id="copyCodeBtn">Copier</button>
-
 </div>
 
 <script>
     const actionType = document.getElementById('actionType');
     const firstButton = document.getElementById('firstButton');
-    const pauseTypeSelection = document.getElementById('pauseTypeSelection');
+    const secondButton = document.getElementById('secondButton');
+    const thirdButton = document.getElementById('thirdButton');
+
     const secondButtonSelection = document.getElementById('secondButtonSelection');
     const secondButtonTimeSelection = document.getElementById('secondButtonTimeSelection');
     const thirdButtonSelection = document.getElementById('thirdButtonSelection');
     const thirdButtonTimeSelection = document.getElementById('thirdButtonTimeSelection');
+
     const generateCodeBtn = document.getElementById('generateCodeBtn');
     const generatedCode = document.getElementById('generatedCode');
     const copyCodeBtn = document.getElementById('copyCodeBtn');
+
+    const firstPlanningIdGroup = document.getElementById('firstPlanningIdGroup');
+    const secondPlanningIdGroup = document.getElementById('secondPlanningIdGroup');
+    const thirdPlanningIdGroup = document.getElementById('thirdPlanningIdGroup');
+
+    function updatePlanningIdVisibility() {
+        if (firstButton.value === 'playreelbutton') {
+            firstPlanningIdGroup.style.display = 'block';
+        } else {
+            firstPlanningIdGroup.style.display = 'none';
+        }
+
+        if (secondButton.value === 'playreelbutton') {
+            secondPlanningIdGroup.style.display = 'block';
+        } else {
+            secondPlanningIdGroup.style.display = 'none';
+        }
+
+        if (thirdButton.value === 'playreelbutton') {
+            thirdPlanningIdGroup.style.display = 'block';
+        } else {
+            thirdPlanningIdGroup.style.display = 'none';
+        }
+    }
 
     actionType.addEventListener('change', function() {
         const action = this.value;
 
         if (action === 'simple') {
-            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'none' : 'none';
             secondButtonSelection.style.display = 'none';
             secondButtonTimeSelection.style.display = 'none';
             thirdButtonSelection.style.display = 'none';
@@ -173,54 +212,145 @@
             secondButtonTimeSelection.style.display = 'block';
             thirdButtonSelection.style.display = 'none';
             thirdButtonTimeSelection.style.display = 'none';
-            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'block' : 'none';
         } else if (action === 'triple') {
             secondButtonSelection.style.display = 'block';
             secondButtonTimeSelection.style.display = 'block';
             thirdButtonSelection.style.display = 'block';
             thirdButtonTimeSelection.style.display = 'block';
-            pauseTypeSelection.style.display = firstButton.value === 'btn-ctrl-pause' ? 'block' : 'none';
         }
+
+        updatePlanningIdVisibility();
     });
 
-    firstButton.addEventListener('change', function() {
-        const action = actionType.value;
-        if (this.value === 'btn-ctrl-pause') {
-            pauseTypeSelection.style.display = action !== 'simple' ? 'block' : 'none';
-        } else {
-            pauseTypeSelection.style.display = 'none';
-        }
-    });
+    firstButton.addEventListener('change', updatePlanningIdVisibility);
+    secondButton.addEventListener('change', updatePlanningIdVisibility);
+    thirdButton.addEventListener('change', updatePlanningIdVisibility);
 
     generateCodeBtn.addEventListener('click', function() {
         const action = actionType.value;
+
         const firstButtonId = firstButton.value;
-        const firstButtonTime = document.getElementById('firstButtonTime').value;
-        const pauseType = document.getElementById('pauseType').value;
-        let code = `var firstButtonTime = new Date();\nfirstButtonTime.setHours(..."${firstButtonTime}".split(':'));\n`;
-        code += `setTimeout(function() {\n    var firstButton = document.getElementById("${firstButtonId}");\n`;
+        const firstButtonTimeVal = document.getElementById('firstButtonTime').value;
+        const firstPlanningId = document.getElementById('firstPlanningId').value;
 
-        if (firstButtonId === 'btn-ctrl-pause' && action !== 'simple') {
-            code += `    firstButton.click();\n`;
-            code += `    document.getElementById('pause_libelle').value = "${pauseType}";\n`;
+        const secondButtonId = document.getElementById('secondButton').value;
+        const secondButtonTimeVal = document.getElementById('secondButtonTime').value;
+        const secondPlanningId = document.getElementById('secondPlanningId').value;
+
+        const thirdButtonId = document.getElementById('thirdButton').value;
+        const thirdButtonTimeVal = document.getElementById('thirdButtonTime').value;
+        const thirdPlanningId = document.getElementById('thirdPlanningId').value;
+
+        if (!firstButtonTimeVal) {
+            alert("Veuillez saisir l'heure du premier bouton.");
+            return;
+        }
+
+        if ((action === 'double' || action === 'triple') && !secondButtonTimeVal) {
+            alert("Veuillez saisir l'heure du deuxième bouton.");
+            return;
+        }
+
+        if (action === 'triple' && !thirdButtonTimeVal) {
+            alert("Veuillez saisir l'heure du troisième bouton.");
+            return;
+        }
+
+        if (firstButtonId === 'playreelbutton' && !firstPlanningId) {
+            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le premier bouton Play.");
+            return;
+        }
+        if ((action === 'double' || action === 'triple') && secondButtonId === 'playreelbutton' && !secondPlanningId) {
+            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le deuxième bouton Play.");
+            return;
+        }
+        if (action === 'triple' && thirdButtonId === 'playreelbutton' && !thirdPlanningId) {
+            alert("Veuillez saisir l'ID de la tâche (planning-id) pour le troisième bouton Play.");
+            return;
+        }
+
+        let code = '';
+
+        // -------- Premier bouton --------
+        code += `var firstButtonTime = new Date();\n`;
+        code += `firstButtonTime.setHours(... "${firstButtonTimeVal}".split(':'));\n`;
+        code += `setTimeout(function() {\n`;
+
+        if (firstButtonId === 'playreelbutton') {
+            const sel = `li.planning-item[data-planning-id="${firstPlanningId}"] .playreelbutton`;
+            code += `    var firstButton = document.querySelector('${sel}');\n`;
+            code += `    if (firstButton) {\n`;
+            code += `        firstButton.click();\n`;
+            code += `        console.log("Premier bouton Play cliqué (planning-id ${firstPlanningId})");\n`;
+            code += `    } else {\n`;
+            code += `        console.log("Premier bouton Play introuvable (planning-id ${firstPlanningId})");\n`;
+            code += `    }\n`;
         } else {
-            code += `    firstButton.click();\n`;
+            code += `    var firstButton = document.getElementById("${firstButtonId}");\n`;
+            code += `    if (firstButton) {\n`;
+            code += `        firstButton.click();\n`;
+            code += `        console.log("Premier bouton cliqué (#${firstButtonId})");\n`;
+            code += `    } else {\n`;
+            code += `        console.log("Premier bouton introuvable (#${firstButtonId})");\n`;
+            code += `    }\n`;
         }
 
-        code += `    console.log("Premier bouton cliqué");\n}, firstButtonTime.getTime() - new Date().getTime());\n`;
+        code += `}, firstButtonTime.getTime() - new Date().getTime());\n\n`;
 
+        // -------- Deuxième bouton --------
         if (action === 'double' || action === 'triple') {
-            const secondButtonId = document.getElementById('secondButton').value;
-            const secondButtonTime = document.getElementById('secondButtonTime').value;
-            code += `var secondButtonTime = new Date();\nsecondButtonTime.setHours(..."${secondButtonTime}".split(':'));\n`;
-            code += `setTimeout(function() {\n    var secondButton = document.getElementById("${secondButtonId}");\n    secondButton.click();\n    console.log("Deuxième bouton cliqué");\n}, secondButtonTime.getTime() - new Date().getTime());\n`;
+            code += `var secondButtonTime = new Date();\n`;
+            code += `secondButtonTime.setHours(... "${secondButtonTimeVal}".split(':'));\n`;
+            code += `setTimeout(function() {\n`;
+
+            if (secondButtonId === 'playreelbutton') {
+                const sel2 = `li.planning-item[data-planning-id="${secondPlanningId}"] .playreelbutton`;
+                code += `    var secondButton = document.querySelector('${sel2}');\n`;
+                code += `    if (secondButton) {\n`;
+                code += `        secondButton.click();\n`;
+                code += `        console.log("Deuxième bouton Play cliqué (planning-id ${secondPlanningId})");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("Deuxième bouton Play introuvable (planning-id ${secondPlanningId})");\n`;
+                code += `    }\n`;
+            } else {
+                code += `    var secondButton = document.getElementById("${secondButtonId}");\n`;
+                code += `    if (secondButton) {\n`;
+                code += `        secondButton.click();\n`;
+                code += `        console.log("Deuxième bouton cliqué (#${secondButtonId})");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("Deuxième bouton introuvable (#${secondButtonId})");\n`;
+                code += `    }\n`;
+            }
+
+            code += `}, secondButtonTime.getTime() - new Date().getTime());\n\n`;
         }
 
+        // -------- Troisième bouton --------
         if (action === 'triple') {
-            const thirdButtonId = document.getElementById('thirdButton').value;
-            const thirdButtonTime = document.getElementById('thirdButtonTime').value;
-            code += `var thirdButtonTime = new Date();\nthirdButtonTime.setHours(..."${thirdButtonTime}".split(':'));\n`;
-            code += `setTimeout(function() {\n    var thirdButton = document.getElementById("${thirdButtonId}");\n    thirdButton.click();\n    console.log("Troisième bouton cliqué");\n}, thirdButtonTime.getTime() - new Date().getTime());\n`;
+            code += `var thirdButtonTime = new Date();\n`;
+            code += `thirdButtonTime.setHours(... "${thirdButtonTimeVal}".split(':'));\n`;
+            code += `setTimeout(function() {\n`;
+
+            if (thirdButtonId === 'playreelbutton') {
+                const sel3 = `li.planning-item[data-planning-id="${thirdPlanningId}"] .playreelbutton`;
+                code += `    var thirdButton = document.querySelector('${sel3}');\n`;
+                code += `    if (thirdButton) {\n`;
+                code += `        thirdButton.click();\n`;
+                code += `        console.log("Troisième bouton Play cliqué (planning-id ${thirdPlanningId})");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("Troisième bouton Play introuvable (planning-id ${thirdPlanningId})");\n`;
+                code += `    }\n`;
+            } else {
+                code += `    var thirdButton = document.getElementById("${thirdButtonId}");\n`;
+                code += `    if (thirdButton) {\n`;
+                code += `        thirdButton.click();\n`;
+                code += `        console.log("Troisième bouton cliqué (#${thirdButtonId})");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("Troisième bouton introuvable (#${thirdButtonId})");\n`;
+                code += `    }\n`;
+            }
+
+            code += `}, thirdButtonTime.getTime() - new Date().getTime());\n\n`;
         }
 
         generatedCode.value = code;
@@ -233,11 +363,12 @@
     });
 </script>
 
-<!-- Section pour l'extinction du PC avec champ "HH:MM:SS" -->
+<!-- ===================================================== -->
+<!-- 2. PROGRAMMATION EXTINCTION PC                        -->
+<!-- ===================================================== -->
 <div class="container">
     <h2>Programmer l'extinction du PC</h2>
 
-    <!-- Heure exacte pour l'extinction du PC -->
     <div class="form-group">
         <label for="shutdownTime">Heure exacte pour l'extinction (HH:MM:SS) :</label>
         <input type="time" id="shutdownTime" step="1">
@@ -254,48 +385,38 @@
 </div>
 
 <script>
-    // Générer le code d'extinction du PC basé sur l'écart de temps entre l'heure actuelle et celle entrée
     const generateShutdownCodeBtn = document.getElementById('generateShutdownCodeBtn');
     const shutdownCode = document.getElementById('shutdownCode');
     const shutdownTimeInput = document.getElementById('shutdownTime');
+    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
     
     generateShutdownCodeBtn.addEventListener('click', function() {
-        const now = new Date(); // Heure actuelle
-        const shutdownTime = shutdownTimeInput.value; // Heure saisie par l'utilisateur
+        const now = new Date();
+        const shutdownTime = shutdownTimeInput.value;
 
-        // Si l'utilisateur n'a pas entré d'heure, sortir
         if (!shutdownTime) {
             alert("Veuillez entrer une heure pour l'extinction.");
             return;
         }
 
-        // Récupérer l'heure, les minutes et les secondes de l'heure entrée par l'utilisateur
         const timeParts = shutdownTime.split(':');
         const shutdownDate = new Date();
         shutdownDate.setHours(timeParts[0]);
         shutdownDate.setMinutes(timeParts[1]);
         shutdownDate.setSeconds(timeParts[2]);
 
-        // Calculer la différence entre l'heure actuelle et l'heure de shutdown (en millisecondes)
         const timeDifference = shutdownDate.getTime() - now.getTime();
 
-        // Si l'heure entrée est antérieure à l'heure actuelle (même jour), alerter l'utilisateur
         if (timeDifference <= 0) {
             alert("L'heure d'extinction doit être après l'heure actuelle.");
             return;
         }
 
-        // Convertir la différence en secondes
         const totalSeconds = Math.floor(timeDifference / 1000);
-
-        // Générer la commande d'extinction
         const shutdownCommand = `shutdown -s -t ${totalSeconds}`;
         shutdownCode.value = shutdownCommand;
     });
 
-    // Copier le code d'extinction
-    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
-    
     copyShutdownCodeBtn.addEventListener('click', function() {
         shutdownCode.select();
         document.execCommand('copy');
@@ -303,10 +424,12 @@
     });
 </script>
 
+<!-- ===================================================== -->
+<!-- 3. GENERATION SCRIPT TAMPERMONKEY                     -->
+<!-- ===================================================== -->
 <div class="container">
     <h2>Génération de Script Tampermonkey</h2>
 
-    <!-- Champ pour entrer le login et le mot de passe -->
     <div class="form-group">
         <label for="tampermonkeyLogin">Login :</label>
         <input type="text" id="tampermonkeyLogin" placeholder="Entrer le login">
@@ -317,7 +440,6 @@
         <input type="text" id="tampermonkeyPassword" placeholder="Entrer le mot de passe">
     </div>
 
-    <!-- Champ pour définir la date, heure, minute et seconde pour saisir le login et le mot de passe -->
     <div class="form-group">
         <label for="loginDate">Date pour saisir le Login et le Mot de passe :</label>
         <input type="date" id="loginDate">
@@ -327,7 +449,6 @@
         <input type="time" id="loginTime" step="1">
     </div>
 
-    <!-- Champ pour définir la date, heure, minute et seconde pour soumettre le formulaire -->
     <div class="form-group">
         <label for="submitDate">Date pour soumettre le formulaire :</label>
         <input type="date" id="submitDate">
@@ -337,7 +458,6 @@
         <input type="time" id="submitTime" step="1">
     </div>
 
-    <!-- Champ pour définir la date, heure, minute et seconde pour cliquer sur le bouton d'action -->
     <div class="form-group">
         <label for="actionDate">Date pour cliquer sur le bouton d'action :</label>
         <input type="date" id="actionDate">
@@ -347,29 +467,27 @@
         <input type="time" id="actionTime" step="1">
     </div>
 
-    <!-- Liste déroulante pour choisir le bouton d'action -->
     <div class="form-group">
         <label for="actionButton">Nom du bouton d'action :</label>
         <select id="actionButton">
-            <option value="btn-ctrl-pause">Pause</option>
-            <option value="confirmTakingPause">Confirmation Pause</option>
-            <option value="btn-ctrl-reprise">Reprise</option>
-            <option value="btn-ctrl-fin">Fin de Shift</option>
-            <option value="confirmFinShift">Confirmation Fin de Shift</option>
-            <option value="btn-activity-debut">Démarrer une tâche</option>
+            <option value="PauseToggleBtn">Pause (toggle) - #PauseToggleBtn</option>
+            <option value="finProdBtn">Fin de production - #finProdBtn</option>
+            <option value="playreel">Bouton Play (tâche planifiée)</option>
         </select>
     </div>
 
-    <!-- Bouton pour générer le script -->
+    <div class="form-group" id="tmPlanningIdGroup" style="display:none;">
+        <label for="tmPlanningId">ID de la tâche (data-planning-id) pour le bouton Play :</label>
+        <input type="text" id="tmPlanningId" placeholder="Ex : 440475">
+    </div>
+
     <button id="generateTampermonkeyCodeBtn">Générer le script Tampermonkey</button>
 
-    <!-- Zone de texte pour afficher le code généré -->
     <div class="form-group">
         <label for="tampermonkeyCode">Code généré :</label>
         <textarea id="tampermonkeyCode" readonly></textarea>
     </div>
 
-    <!-- Bouton pour copier le code généré -->
     <button id="copyTampermonkeyCodeBtn">Copier le code</button>
 </div>
 
@@ -386,6 +504,8 @@
     const actionDate = document.getElementById('actionDate');
     const actionTime = document.getElementById('actionTime');
     const actionButton = document.getElementById('actionButton');
+    const tmPlanningIdGroup = document.getElementById('tmPlanningIdGroup');
+    const tmPlanningIdInput = document.getElementById('tmPlanningId');
 
     function getTimeDifference(date, time) {
         const now = new Date();
@@ -395,6 +515,14 @@
         return difference > 0 ? difference : 0;
     }
 
+    actionButton.addEventListener('change', function() {
+        if (actionButton.value === 'playreel') {
+            tmPlanningIdGroup.style.display = 'block';
+        } else {
+            tmPlanningIdGroup.style.display = 'none';
+        }
+    });
+
     generateTampermonkeyCodeBtn.addEventListener('click', function() {
         const login = tampermonkeyLogin.value;
         const password = tampermonkeyPassword.value;
@@ -402,13 +530,21 @@
         const submitDateTime = getTimeDifference(submitDate.value, submitTime.value);
         const actionDateTime = getTimeDifference(actionDate.value, actionTime.value);
         const actionButtonValue = actionButton.value;
+        const tmPlanningId = tmPlanningIdInput.value;
 
         if (!login || !password || !loginDateTime || !submitDateTime || !actionDateTime || !actionButtonValue) {
             alert("Veuillez remplir tous les champs.");
             return;
         }
 
-        // Créer le script Tampermonkey avec les champs personnalisés
+        if (actionButtonValue === 'playreel' && !tmPlanningId) {
+            alert("Veuillez renseigner l'ID de la tâche (data-planning-id) pour le bouton Play.");
+            return;
+        }
+
+        const safeLogin = login.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+        const safePassword = password.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+
         let code = `// ==UserScript==\n`;
         code += `// @name         Auto Login and Start Task\n`;
         code += `// @namespace    http://tampermonkey.net/\n`;
@@ -421,43 +557,71 @@
         code += `// ==/UserScript==\n\n`;
         code += `(function() {\n`;
         code += `    'use strict';\n\n`;
-        code += `    // Définir le login et le mot de passe\n`;
-        code += `    const username = '${login}';\n`;
-        code += `    const password = '${password}';\n\n`;
+        code += `    const username = '${safeLogin}';\n`;
+        code += `    const password = '${safePassword}';\n\n`;
 
-        // Ajouter la logique pour saisir le login et le mot de passe à l'heure exacte
-        code += `    // Si nous sommes sur la page de connexion\n`;
+        // Page de login
         code += `    if (window.location.href.includes("auth/login")) {\n`;
         code += `        const loginCheckInterval = setInterval(() => {\n`;
         code += `            const now = new Date();\n`;
         code += `            const loginTarget = new Date('${loginDate.value}T${loginTime.value}');\n`;
         code += `            if (now >= loginTarget) {\n`;
-        code += `                document.querySelector('input[name="tt_username"]').value = username;\n`;
-        code += `                document.querySelector('input[name="tt_pwd"]').value = password;\n`;
-        code += `                clearInterval(loginCheckInterval);\n`; // Stop the interval after login is done
+        code += `                const userInput = document.querySelector('input[name="tt_username"]');\n`;
+        code += `                const pwdInput = document.querySelector('input[name="tt_pwd"]');\n`;
+        code += `                if (userInput && pwdInput) {\n`;
+        code += `                    userInput.value = username;\n`;
+        code += `                    pwdInput.value = password;\n`;
+        code += `                    console.log("Login et mot de passe remplis");\n`;
+        code += `                    clearInterval(loginCheckInterval);\n`;
+        code += `                } else {\n`;
+        code += `                    console.log("Champs login/mot de passe introuvables");\n`;
+        code += `                }\n`;
         code += `            }\n`;
-        code += `        }, 1000); // Vérifier toutes les secondes\n\n`;
+        code += `        }, 1000);\n\n`;
 
-        // Ajouter la logique pour soumettre le formulaire à l'heure exacte
         code += `        const submitCheckInterval = setInterval(() => {\n`;
         code += `            const now = new Date();\n`;
         code += `            const submitTarget = new Date('${submitDate.value}T${submitTime.value}');\n`;
         code += `            if (now >= submitTarget) {\n`;
-        code += `                document.querySelector('.login100-form-btn').click();\n`;
-        code += `                clearInterval(submitCheckInterval);\n`; // Stop the interval after submission
+        code += `                const submitBtn = document.querySelector('.login100-form-btn');\n`;
+        code += `                if (submitBtn) {\n`;
+        code += `                    submitBtn.click();\n`;
+        code += `                    console.log("Formulaire de login soumis");\n`;
+        code += `                } else {\n`;
+        code += `                    console.log("Bouton de soumission introuvable");\n`;
+        code += `                }\n`;
+        code += `                clearInterval(submitCheckInterval);\n`;
         code += `            }\n`;
         code += `        }, 1000);\n`;
         code += `    }\n\n`;
 
-        // Ajouter la logique pour cliquer sur le bouton d'action à l'heure exacte
-        code += `    // Si nous sommes sur le dashboard où le bouton d'action est présent\n`;
+        // Dashboard / clic sur bouton d'action
         code += `    if (window.location.href.includes("dashboard/index")) {\n`;
         code += `        const actionCheckInterval = setInterval(() => {\n`;
         code += `            const now = new Date();\n`;
         code += `            const actionTarget = new Date('${actionDate.value}T${actionTime.value}');\n`;
         code += `            if (now >= actionTarget) {\n`;
-        code += `                document.querySelector('#${actionButtonValue}').click();\n`;
-        code += `                clearInterval(actionCheckInterval);\n`; // Stop the interval after action is done
+
+        if (actionButtonValue === 'playreel') {
+            const sel = `li.planning-item[data-planning-id="${tmPlanningId}"] .playreelbutton`;
+            code += `                const playBtn = document.querySelector('${sel}');\n`;
+            code += `                if (playBtn) {\n`;
+            code += `                    playBtn.click();\n`;
+            code += `                    console.log('Bouton Play cliqué pour la tâche ${tmPlanningId}');\n`;
+            code += `                } else {\n`;
+            code += `                    console.log('Bouton Play introuvable pour la tâche ${tmPlanningId}');\n`;
+            code += `                }\n`;
+        } else {
+            code += `                const actionBtn = document.querySelector('#${actionButtonValue}');\n`;
+            code += `                if (actionBtn) {\n`;
+            code += `                    actionBtn.click();\n`;
+            code += `                    console.log("Bouton d'action cliqué (#${actionButtonValue})");\n`;
+            code += `                } else {\n`;
+            code += `                    console.log("Bouton d'action introuvable (#${actionButtonValue})");\n`;
+            code += `                }\n`;
+        }
+
+        code += `                clearInterval(actionCheckInterval);\n`;
         code += `            }\n`;
         code += `        }, 1000);\n`;
         code += `    }\n`;
@@ -466,7 +630,6 @@
         tampermonkeyCode.value = code;
     });
 
-    // Copier le code généré
     copyTampermonkeyCodeBtn.addEventListener('click', function() {
         tampermonkeyCode.select();
         document.execCommand('copy');
@@ -474,8 +637,6 @@
     });
 </script>
 
-
-
-<footer>By RoberiX-2024</footer>
+<footer>By RoberiX-2025</footer>
 </body>
 </html>
