@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Outil d'automatisation</title>
+    <title>Automaka TT</title>
     <style>
         :root {
             --bg: #050816;
@@ -45,7 +45,7 @@
             align-items: center;
             justify-content: space-between;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 18px;
         }
 
         .title-block h1 {
@@ -104,6 +104,128 @@
             font-size: .7rem;
             text-transform: uppercase;
             letter-spacing: .12em;
+        }
+
+        /* Readme toggle */
+        .readme-wrapper {
+            margin-bottom: 18px;
+        }
+
+        .btn-readme-toggle {
+            border-radius: 999px;
+            border: 1px solid rgba(148,163,184,.5);
+            background: rgba(15,23,42,.9);
+            color: var(--text-soft);
+            padding: 6px 12px;
+            font-size: .8rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: background .18s ease, border .18s ease, transform .08s ease;
+        }
+
+        .btn-readme-toggle:hover {
+            background: rgba(15,23,42,1);
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-readme-toggle span.chevron {
+            font-size: .8rem;
+            transition: transform .16s ease;
+        }
+
+        .btn-readme-toggle.open span.chevron {
+            transform: rotate(90deg);
+        }
+
+        .readme-panel {
+            margin-top: 8px;
+            border-radius: var(--radius-lg);
+            background: rgba(15,23,42,.9);
+            border: 1px solid rgba(148,163,184,.35);
+            padding: 14px 16px;
+            font-size: .8rem;
+            color: var(--text-soft);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .22s ease, opacity .18s ease, transform .18s ease;
+            opacity: 0;
+            transform: translateY(-4px);
+        }
+
+        .readme-panel.open {
+            max-height: 520px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .readme-panel h3 {
+            margin: 0 0 6px;
+            font-size: .95rem;
+            color: var(--text);
+        }
+
+        .readme-panel p {
+            margin: 4px 0;
+        }
+
+        .readme-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 800px) {
+            .readme-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .readme-block {
+            padding: 8px 10px;
+            border-radius: 12px;
+            background: rgba(15,23,42,.9);
+            border: 1px solid rgba(55,65,81,.7);
+        }
+
+        .readme-block-title {
+            font-size: .78rem;
+            text-transform: uppercase;
+            letter-spacing: .12em;
+            color: #e5e7ff;
+            margin-bottom: 4px;
+        }
+
+        .readme-code {
+            margin-top: 4px;
+            padding: 6px 7px;
+            border-radius: 8px;
+            background: #020617;
+            border: 1px solid rgba(31,41,55,.9);
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: .72rem;
+            overflow-x: auto;
+        }
+
+        .kbd {
+            background: rgba(15,23,42, .9);
+            border-radius: 6px;
+            border: 1px solid rgba(148,163,184,.6);
+            padding: 2px 6px;
+            font-size: .7rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+        }
+
+        .readme-note {
+            margin-top: 6px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background: rgba(79,70,229,.08);
+            border: 1px dashed rgba(79,70,229,.7);
+            font-size: .76rem;
         }
 
         .grid {
@@ -200,13 +322,9 @@
 
         .form-row {
             display: grid;
-            grid-template-columns: minmax(0, 1.25fr) minmax(0, .9fr) minmax(0, .9fr);
+            grid-template-columns: minmax(0, 1.3fr) minmax(0, .9fr);
             gap: 10px;
             margin-bottom: 10px;
-        }
-
-        .form-row.single {
-            grid-template-columns: minmax(0, 1.3fr) minmax(0, .8fr);
         }
 
         .form-group {
@@ -259,7 +377,7 @@
             font-size: .8rem;
             resize: vertical;
             min-height: 120px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
         }
 
         textarea:focus {
@@ -336,15 +454,6 @@
             margin: 18px 0 14px;
         }
 
-        .kbd {
-            background: rgba(15,23,42, .9);
-            border-radius: 6px;
-            border: 1px solid rgba(148,163,184,.6);
-            padding: 2px 6px;
-            font-size: .7rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        }
-
         .hint-line {
             font-size: .75rem;
             color: var(--text-soft);
@@ -380,16 +489,121 @@
                 <span class="status-dot"></span>
                 <span>BOB-ROBOT</span>
             </div>
-            <h1>
-             Automatizeo le TT
-            </h1>
-            <p>Ils se croient malins avec leur TT, mais nous, on est mille fois ...</p>
+            <h1>Outil d'automatisation</h1>
+            <p>Programme des clics sur tes boutons (Fin prod, Pause, Play) à l'heure exacte.</p>
         </div>
         <div class="header-badge">
-            <span class="tag">Live</span>
-            <span>Colleo le code généré dans la Console du navigateur. F12 pour afficher la fenetre du Console du navigateur</span>
+            <span class="tag">Console</span>
+            <span>JS à coller dans F12 &gt; Console</span>
         </div>
     </header>
+
+    <!-- Vakio ah alo -->
+    <section class="readme-wrapper">
+        <button id="readmeToggleBtn" class="btn-readme-toggle">
+            <span>📘 LIS MOI DABORO!!!</span>
+            <span class="chevron">▶</span>
+        </button>
+        <div id="readmePanel" class="readme-panel">
+            <h3>Comment utiliser notre putain d'outil</h3>
+            <p>En résumé : tu choisis le type d'action (simple / double / triple), les boutons et les heures, puis tu colles le code généré dans la console de Chrome sur la page de suivi du temps.</p>
+
+            <div class="readme-grid">
+                <div class="readme-block">
+                    <div class="readme-block-title">1. Étapes générales</div>
+                    <p>1️⃣ Ouvre la page de suivi temps (là où il y a Fin de production / Pause / Play).</p>
+                    <p>2️⃣ Ouvre la console Chrome : <span class="kbd">F12</span> → onglet <span class="kbd">Console</span>.</p>
+                    <p>3️⃣ Dans ton outil, configure :</p>
+                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
+                        <li style="margin-bottom:2px;">le type d'action (simple / double / triple),</li>
+                        <li style="margin-bottom:2px;">les boutons (Fin prod, Pause, Play),</li>
+                        <li>les heures (format 24h HH:MM:SS).</li>
+                    </ul>
+                    <p>4️⃣ Clique sur <strong>“Générer le script JS”</strong>, copie le code généré.</p>
+                    <p>5️⃣ Colle-le dans la console, appuie sur <span class="kbd">Entrée</span>.</p>
+                </div>
+
+                <div class="readme-block">
+                    <div class="readme-block-title">2. “Allow pasting” dans Chrome</div>
+                    <p>La première fois que tu colles du gros code dans la console Chrome, elle peut être relou et protéger :</p>
+                    <div class="readme-note">
+                        <strong>Si Chrome bloque le collage :</strong><br>
+                        1️⃣ Tape : <span class="kbd">Allow pasting</span> dans la console<br>
+                        2️⃣ Appuie sur <span class="kbd">Entrée</span><br>
+                        3️⃣ Recolle ensuite ton script.<br><br>
+                        Tu n'auras plus besoin de le refaire après (pour cette session).
+                    </div>
+                </div>
+            </div>
+
+            <div class="readme-grid" style="margin-top:10px;">
+                <div class="readme-block">
+                    <div class="readme-block-title">Exemple – Simple action</div>
+                    <p>👉 Lancer le bouton Pause à 18:30:00</p>
+                    <div class="readme-code">
+<pre>var firstButtonTime = new Date();
+firstButtonTime.setHours(... "18:30:00".split(':'));
+setTimeout(function() {
+    var btn = document.getElementById("PauseToggleBtn");
+    if (btn) {
+        btn.click();
+        console.log("Pause lancée");
+    }
+}, firstButtonTime.getTime() - new Date().getTime());</pre>
+                    </div>
+                </div>
+
+                <div class="readme-block">
+                    <div class="readme-block-title">Exemple – Double action</div>
+                    <p>👉 Démarrer la pause à 18:30:00, la stopper à 18:35:00</p>
+                    <div class="readme-code">
+<pre>var firstButtonTime = new Date();
+firstButtonTime.setHours(... "18:30:00".split(':'));
+setTimeout(function() {
+    document.getElementById("PauseToggleBtn")?.click();
+}, firstButtonTime.getTime() - new Date().getTime());
+
+var secondButtonTime = new Date();
+secondButtonTime.setHours(... "18:35:00".split(':'));
+setTimeout(function() {
+    document.getElementById("PauseToggleBtn")?.click();
+}, secondButtonTime.getTime() - new Date().getTime());</pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="readme-grid" style="margin-top:10px;">
+                <div class="readme-block">
+                    <div class="readme-block-title">Exemple – Triple action (Play)</div>
+                    <p>👉 Enchaîner Play sur trois tâches :</p>
+                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
+                        <li>Play à 16:00:00 → Production</li>
+                        <li>Play à 20:00:00 → Pause déjeuner</li>
+                        <li>Play à 21:00:00 → Production suivante</li>
+                    </ul>
+                    <p>Dans l'outil :</p>
+                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
+                        <li>Type : Triple action</li>
+                        <li>Boutons 1/2/3 : Bouton Play (tâche visible)</li>
+                        <li>Heures : 16:00:00 / 20:00:00 / 21:00:00</li>
+                    </ul>
+                    <p>Le Play sera toujours cliqué sur la tâche “en attente / visible” dans le planning.</p>
+                </div>
+
+                <div class="readme-block">
+                    <div class="readme-block-title">Fin de production & message box</div>
+                    <p>Le bouton <strong>Fin de production</strong> affiche une boîte de confirmation (“OK / Annuler”).</p>
+                    <p>Le script généré par l'outil :</p>
+                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
+                        <li>clique sur <span class="kbd">#finProdBtn</span>,</li>
+                        <li>force <span class="kbd">window.confirm()</span> à renvoyer <strong>true</strong> pendant 10 secondes,</li>
+                        <li>puis restaure le comportement normal.</li>
+                    </ul>
+                    <p>➡️ Pas besoin de cliquer sur OK : c'est auto-validé.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <main class="grid">
         <!-- ============ CARD 1 : CLICS PROGRAMMÉS ============ -->
@@ -423,13 +637,13 @@
                 <div class="section-divider"></div>
 
                 <!-- Ligne 1 -->
-                <div class="form-row single">
+                <div class="form-row">
                     <div class="form-group">
                         <label for="firstButton">1. Premier bouton</label>
                         <select id="firstButton">
                             <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-                            <option value="PauseToggleBtn">Bouton Pause (le bouton vert à droite io)</option>
-                            <option value="playreelbutton">Bouton Play (izay visible ihany)</option>
+                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -439,13 +653,13 @@
                 </div>
 
                 <!-- Ligne 2 -->
-                <div id="secondButtonSelection" class="form-row single" style="display:none;">
+                <div id="secondButtonSelection" class="form-row" style="display:none;">
                     <div class="form-group">
                         <label for="secondButton">2. Deuxième bouton</label>
                         <select id="secondButton">
                             <option value="finProdBtn">Fin de production (#finProdBtn)</option>
                             <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-                            <option value="playreelbutton">Bouton Play (izay visible ihany)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
                         </select>
                     </div>
                     <div id="secondButtonTimeSelection" class="form-group">
@@ -455,13 +669,13 @@
                 </div>
 
                 <!-- Ligne 3 -->
-                <div id="thirdButtonSelection" class="form-row single" style="display:none;">
+                <div id="thirdButtonSelection" class="form-row" style="display:none;">
                     <div class="form-group">
                         <label for="thirdButton">3. Troisième bouton</label>
                         <select id="thirdButton">
                             <option value="finProdBtn">Fin de production (#finProdBtn)</option>
                             <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-                            <option value="playreelbutton">Bouton Play (izay visible ihany)</option>
+                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
                         </select>
                     </div>
                     <div id="thirdButtonTimeSelection" class="form-group">
@@ -491,7 +705,7 @@
                         </button>
                     </div>
                     <div class="hint-line">
-                        <span class="hint-pill">A lire o!!</span>
+                        <span class="hint-pill">Tip</span>
                         <span>Ouvre la page de suivi temps, F12 &gt; Console, colle le script, Enter.</span>
                     </div>
                 </div>
@@ -508,7 +722,7 @@
                             Extinction programmée du PC
                         </div>
                         <div class="card-subtitle">
-                            Génère la commande Windows <code class="kbd">shutdown</code> à coller dans le terminal / Exécuter.
+                            Génère la commande Windows <span class="kbd">shutdown</span> à coller dans Exécuter / Terminal.
                         </div>
                     </div>
                     <span class="pill">Windows only</span>
@@ -557,6 +771,15 @@
 </div>
 
 <script>
+    // === READ ME TOGGLE ===
+    const readmeToggleBtn = document.getElementById('readmeToggleBtn');
+    const readmePanel = document.getElementById('readmePanel');
+
+    readmeToggleBtn.addEventListener('click', () => {
+        const isOpen = readmePanel.classList.toggle('open');
+        readmeToggleBtn.classList.toggle('open', isOpen);
+    });
+
     // === Références DOM principales ===
     const actionType = document.getElementById('actionType');
     const firstButton = document.getElementById('firstButton');
@@ -587,14 +810,14 @@
             thirdButtonSelection.style.display = 'none';
             thirdButtonTimeSelection.style.display = 'none';
         } else if (action === 'double') {
-            secondButtonSelection.style.display = 'flex';
+            secondButtonSelection.style.display = 'grid';
             secondButtonTimeSelection.style.display = 'block';
             thirdButtonSelection.style.display = 'none';
             thirdButtonTimeSelection.style.display = 'none';
         } else if (action === 'triple') {
-            secondButtonSelection.style.display = 'flex';
+            secondButtonSelection.style.display = 'grid';
             secondButtonTimeSelection.style.display = 'block';
-            thirdButtonSelection.style.display = 'flex';
+            thirdButtonSelection.style.display = 'grid';
             thirdButtonTimeSelection.style.display = 'block';
         }
     });
@@ -648,8 +871,24 @@
                 code += `    } else {\n`;
                 code += `        console.log("${which} : aucun bouton Play visible trouvé");\n`;
                 code += `    }\n`;
+            } else if (btnId === 'finProdBtn') {
+                // Fin de production : forcer window.confirm() à OK pendant 10 secondes
+                code += `    var __origConfirm__ = window.confirm;\n`;
+                code += `    window.confirm = function(){ return true; };\n`;
+                code += `    console.log("${which} : confirm() forcé à OK pendant 10s");\n\n`;
+                code += `    var btn = document.getElementById("finProdBtn");\n`;
+                code += `    if (btn) {\n`;
+                code += `        btn.click();\n`;
+                code += `        console.log("${which} : bouton 'Fin de production' cliqué (#finProdBtn)");\n`;
+                code += `    } else {\n`;
+                code += `        console.log("${which} : bouton 'Fin de production' introuvable (#finProdBtn)");\n`;
+                code += `    }\n\n`;
+                code += `    setTimeout(function(){\n`;
+                code += `        window.confirm = __origConfirm__;\n`;
+                code += `        console.log("${which} : confirm() restauré");\n`;
+                code += `    }, 10000);\n`;
             } else {
-                // Bouton ciblé par ID (FinProd, Pause)
+                // Bouton ciblé par ID (Pause, etc.)
                 code += `    var btn = document.getElementById("${btnId}");\n`;
                 code += `    if (btn) {\n`;
                 code += `        btn.click();\n`;
@@ -730,5 +969,3 @@
 </script>
 </body>
 </html>
-
-
