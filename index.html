@@ -106,128 +106,6 @@
             letter-spacing: .12em;
         }
 
-        /* Readme toggle */
-        .readme-wrapper {
-            margin-bottom: 18px;
-        }
-
-        .btn-readme-toggle {
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,.5);
-            background: rgba(15,23,42,.9);
-            color: var(--text-soft);
-            padding: 6px 12px;
-            font-size: .8rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: background .18s ease, border .18s ease, transform .08s ease;
-        }
-
-        .btn-readme-toggle:hover {
-            background: rgba(15,23,42,1);
-            border-color: var(--accent);
-            transform: translateY(-1px);
-        }
-
-        .btn-readme-toggle span.chevron {
-            font-size: .8rem;
-            transition: transform .16s ease;
-        }
-
-        .btn-readme-toggle.open span.chevron {
-            transform: rotate(90deg);
-        }
-
-        .readme-panel {
-            margin-top: 8px;
-            border-radius: var(--radius-lg);
-            background: rgba(15,23,42,.9);
-            border: 1px solid rgba(148,163,184,.35);
-            padding: 14px 16px;
-            font-size: .8rem;
-            color: var(--text-soft);
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height .22s ease, opacity .18s ease, transform .18s ease;
-            opacity: 0;
-            transform: translateY(-4px);
-        }
-
-        .readme-panel.open {
-            max-height: 520px;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .readme-panel h3 {
-            margin: 0 0 6px;
-            font-size: .95rem;
-            color: var(--text);
-        }
-
-        .readme-panel p {
-            margin: 4px 0;
-        }
-
-        .readme-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.1fr);
-            gap: 10px;
-            margin-top: 8px;
-        }
-
-        @media (max-width: 800px) {
-            .readme-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .readme-block {
-            padding: 8px 10px;
-            border-radius: 12px;
-            background: rgba(15,23,42,.9);
-            border: 1px solid rgba(55,65,81,.7);
-        }
-
-        .readme-block-title {
-            font-size: .78rem;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            color: #e5e7ff;
-            margin-bottom: 4px;
-        }
-
-        .readme-code {
-            margin-top: 4px;
-            padding: 6px 7px;
-            border-radius: 8px;
-            background: #020617;
-            border: 1px solid rgba(31,41,55,.9);
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
-            font-size: .72rem;
-            overflow-x: auto;
-        }
-
-        .kbd {
-            background: rgba(15,23,42, .9);
-            border-radius: 6px;
-            border: 1px solid rgba(148,163,184,.6);
-            padding: 2px 6px;
-            font-size: .7rem;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
-        }
-
-        .readme-note {
-            margin-top: 6px;
-            padding: 6px 8px;
-            border-radius: 8px;
-            background: rgba(79,70,229,.08);
-            border: 1px dashed rgba(79,70,229,.7);
-            font-size: .76rem;
-        }
-
         .grid {
             display: grid;
             grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
@@ -470,6 +348,21 @@
             font-size: .7rem;
         }
 
+
+        code {
+            background: rgba(15,23,42,.9);
+            border: 1px solid rgba(148,163,184,.25);
+            border-radius: 8px;
+            padding: 2px 6px;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: .78rem;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
         footer {
             text-align: center;
             margin-top: 12px;
@@ -490,7 +383,7 @@
                 <span>BOB-ROBOT</span>
             </div>
             <h1>Outil d'automatisation</h1>
-            <p>Programme des clics sur tes boutons (Fin prod, Pause, Play) à l'heure exacte.</p>
+            <p>Programme tes clics sur les boutons Play visibles et sur “Terminer la journée” à l'heure exacte.</p>
         </div>
         <div class="header-badge">
             <span class="tag">Console</span>
@@ -498,75 +391,18 @@
         </div>
     </header>
 
-    <!-- Vakio ah alo -->
-    <section class="readme-wrapper">
-        <button id="readmeToggleBtn" class="btn-readme-toggle">
-            <span>📘 LIS MOI DABORO!!!</span>
-            <span class="chevron">▶</span>
-        </button>
-        <div id="readmePanel" class="readme-panel">
-            <h3>Comment utiliser notre putain d'outil</h3>
-            <p>En résumé : tu choisis le type d'action (simple / double / triple), les boutons et les heures, puis tu colles le code généré dans la console de Chrome sur la page de suivi du temps.</p>
-
-            <div class="readme-grid">
-                <div class="readme-block">
-                    <div class="readme-block-title">1. Étapes générales</div>
-                    <p>1️⃣ Ouvre la page de Time Tracking (là où il y a le bouton Fin de production, les boutons Play).</p>
-                    <p>2️⃣ En restant sur la page Time tracking, appuyer le bouton F12 du clavier pour Ouvrir la fenetre de la console Chrome : <span class="kbd">F12</span> → onglet <span class="kbd">Console</span>.</p>
-                    <p>3️⃣ Dans ton outil, configure :</p>
-                    <ul style="margin:4px 0 4px 18px;padding-left:0;">
-                        <li style="margin-bottom:2px;">le type d'action (simple / double / triple),</li>
-                        <li style="margin-bottom:2px;">les boutons (Fin prod, Pause, Play),</li>
-                        <li>les heures (format 24h HH:MM:SS).</li>
-                    </ul>
-                    <p>4️⃣ Clique sur <strong>“Générer le script JS”</strong>, copie le code généré.</p>
-                    <p>5️⃣ Colle-le dans la console, appuie sur <span class="kbd">Entrée</span>.</p>
-                </div>
-
-                <div class="readme-block">
-                    <div class="readme-block-title">2. “Allow pasting” dans Chrome</div>
-                    <p>La première fois que tu colles du gros code dans la console Chrome, elle peut être relou et protéger :</p>
-                    <div class="readme-note">
-                        <strong>Si Chrome bloque le collage :</strong><br>
-                        1️⃣ Tape : <span class="kbd">Allow pasting</span> dans la console<br>
-                        2️⃣ Appuie sur <span class="kbd">Entrée</span><br>
-                        3️⃣ Recolle ensuite ton script.<br><br>
-                        Tu n'auras plus besoin de le refaire après (pour cette session).
-                    </div>
-                </div>
+    <section style="margin-bottom:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
+        <div class="card" style="padding:14px 16px;">
+            <div class="card-inner">
+                <div class="card-title" style="font-size:.92rem;"><span class="card-title-icon">▶️</span>Nouveau Play détecté</div>
+                <div class="card-subtitle">Le script clique désormais sur <strong>.play-btn.visible</strong>, donc sur le bouton Play réellement affiché du moment.</div>
             </div>
-<div class="readme-grid" style="margin-top:10px;">
-    <div class="readme-block">
-        <div class="readme-block-title">Exemple – Simple action</div>
-        <p><strong>Objectif :</strong> lancer automatiquement une petite pause.</p>
-        <p><strong>Scénario :</strong> tu veux que le bouton <strong>Pause</strong> soit cliqué à <strong>18:30:00</strong>.</p>
-        <p><strong>Dans l’outil, tu choisis :</strong></p>
-        <ul style="margin:4px 0 4px 18px;padding-left:0;">
-            <li><strong>Type d'automatisation</strong> : Simple action</li>
-            <li><strong>1. Premier bouton</strong> : Bouton Pause (#PauseToggleBtn)</li>
-            <li><strong>Heure</strong> : 18:30:00</li>
-        </ul>
-        <p><strong>Résultat :</strong> à 18h30, l’outil clique sur le bouton Pause une fois (comme si tu avais cliqué toi-même).</p>
-    </div>
-
-    <div class="readme-block">
-        <div class="readme-block-title">Exemple – Triple action</div>
-Exemple concret avec tes 3 blocs :
-Supposons que ton planning du jour soit :
-11h00–15h00 → Production
-15h00–16h00 → Pause déjeuner
-16h00–20h00 → Production
-Tu peux faire dans l’outil :
-Type d’action : Triple
-1er bouton : Bouton Play (tâche visible) → heure : 11:00:00
-2e bouton : Bouton Play (tâche visible) → heure : 15:00:00
-3e bouton : Bouton Play (tâche visible) → heure : 16:00:00
-Résultat :
-11h00 → il clique sur le Play visible → ça lance la 1ère Production
-15h00 → à ce moment-là, le Play visible sera sur Pause déjeuner → ça lance la pause
-16h00 → le Play visible sera sur la Production suivante → ça lance la prod
-    </div>
-</div>
+        </div>
+        <div class="card card-secondary" style="padding:14px 16px;">
+            <div class="card-inner">
+                <div class="card-title" style="font-size:.92rem;"><span class="card-title-icon">🏁</span>Fin de journée</div>
+                <div class="card-subtitle">Le bouton final ciblé est maintenant <strong>.btn-terminer</strong>, avec validation automatique du <code>confirm()</code>.</div>
+            </div>
         </div>
     </section>
 
@@ -581,16 +417,16 @@ Résultat :
                             Programmation des clics
                         </div>
                         <div class="card-subtitle">
-                            Choisis le type d'action, les boutons, et les heures. Je te génère le script JS.
+                            Choisis l'ordre des actions et les heures. Le script visera le Play visible puis le bouton final de fin de journée.
                         </div>
                     </div>
-                    <span class="pill pill-accent">FinProd · Pause · Play</span>
+                    <span class="pill pill-accent">Play visible · Btn terminer</span>
                 </div>
 
                 <div class="form-group">
                     <label for="actionType">
                         Type d'automatisation
-                        <span class="hint">Simple = 1 clic, Double = 2, Triple = 3</span>
+                        <span class="hint">Ex. déjeuner, reprise, fin de journée</span>
                     </label>
                     <select id="actionType">
                         <option value="simple">Simple action</option>
@@ -606,9 +442,8 @@ Résultat :
                     <div class="form-group">
                         <label for="firstButton">1. Premier bouton</label>
                         <select id="firstButton">
-                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
+                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -622,9 +457,8 @@ Résultat :
                     <div class="form-group">
                         <label for="secondButton">2. Deuxième bouton</label>
                         <select id="secondButton">
-                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
+                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
                         </select>
                     </div>
                     <div id="secondButtonTimeSelection" class="form-group">
@@ -638,9 +472,8 @@ Résultat :
                     <div class="form-group">
                         <label for="thirdButton">3. Troisième bouton</label>
                         <select id="thirdButton">
-                            <option value="finProdBtn">Fin de production (#finProdBtn)</option>
-                            <option value="PauseToggleBtn">Bouton Pause (#PauseToggleBtn)</option>
-                            <option value="playreelbutton">Bouton Play (tâche visible)</option>
+                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
+                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
                         </select>
                     </div>
                     <div id="thirdButtonTimeSelection" class="form-group">
@@ -660,7 +493,7 @@ Résultat :
                         Code généré
                         <span class="badge-inline">
                             <span class="badge-dot"></span>
-                            <span>Coller dans la console (F12 &gt; Console)</span>
+                            <span>Copier-coller dans F12 &gt; Console</span>
                         </span>
                     </label>
                     <textarea id="generatedCode" readonly placeholder="// Le code apparaîtra ici après génération"></textarea>
@@ -732,19 +565,10 @@ Résultat :
         </section>
     </main>
 
-    <footer>By RoberiX-2025 · Fuck Time Tracking</footer>
+    <footer>By RoberiX · Time Tracking Survivor Edition</footer>
 </div>
 
 <script>
-    // === READ ME TOGGLE ===
-    const readmeToggleBtn = document.getElementById('readmeToggleBtn');
-    const readmePanel = document.getElementById('readmePanel');
-
-    readmeToggleBtn.addEventListener('click', () => {
-        const isOpen = readmePanel.classList.toggle('open');
-        readmeToggleBtn.classList.toggle('open', isOpen);
-    });
-
     // === Références DOM principales ===
     const actionType = document.getElementById('actionType');
     const firstButton = document.getElementById('firstButton');
@@ -787,6 +611,7 @@ Résultat :
         }
     });
 
+
     // === Génération du script JS pour les clics programmés ===
     generateCodeBtn.addEventListener('click', function () {
         const action = actionType.value;
@@ -817,67 +642,144 @@ Résultat :
 
         let code = '';
 
-        // Helper : génération d'un bloc setTimeout pour un bouton donné
-        function addClickBlock(which, btnId, timeVal) {
-            code += `var ${which}Time = new Date();\n`;
-            code += `${which}Time.setHours(... "${timeVal}".split(':'));\n`;
-            code += `setTimeout(function() {\n`;
+        code += `(function() {
+`;
+        code += `  var AUTO_TT_VERSION = "2026.04-btn-visible";
+`;
+        code += `  console.log("[AUTO TT] Script chargé - version " + AUTO_TT_VERSION);
 
-            if (btnId === 'playreelbutton') {
-                // On clique sur le bouton Play visible (celui qui n'est pas display:none)
-                code += `    var btns = document.querySelectorAll('.playreelbutton');\n`;
-                code += `    var targetBtn = null;\n`;
-                code += `    for (var i = 0; i < btns.length; i++) {\n`;
-                code += `        if (btns[i].offsetParent !== null) { targetBtn = btns[i]; break; }\n`;
-                code += `    }\n`;
-                code += `    if (targetBtn) {\n`;
-                code += `        targetBtn.click();\n`;
-                code += `        console.log("${which} : bouton Play visible cliqué");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("${which} : aucun bouton Play visible trouvé");\n`;
-                code += `    }\n`;
-            } else if (btnId === 'finProdBtn') {
-                // Fin de production : forcer window.confirm() à OK pendant 10 secondes
-                code += `    var __origConfirm__ = window.confirm;\n`;
-                code += `    window.confirm = function(){ return true; };\n`;
-                code += `    console.log("${which} : confirm() forcé à OK pendant 10s");\n\n`;
-                code += `    var btn = document.getElementById("finProdBtn");\n`;
-                code += `    if (btn) {\n`;
-                code += `        btn.click();\n`;
-                code += `        console.log("${which} : bouton 'Fin de production' cliqué (#finProdBtn)");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("${which} : bouton 'Fin de production' introuvable (#finProdBtn)");\n`;
-                code += `    }\n\n`;
-                code += `    setTimeout(function(){\n`;
-                code += `        window.confirm = __origConfirm__;\n`;
-                code += `        console.log("${which} : confirm() restauré");\n`;
-                code += `    }, 10000);\n`;
-            } else {
-                // Bouton ciblé par ID (Pause, etc.)
-                code += `    var btn = document.getElementById("${btnId}");\n`;
-                code += `    if (btn) {\n`;
-                code += `        btn.click();\n`;
-                code += `        console.log("${which} : bouton cliqué (#${btnId})");\n`;
-                code += `    } else {\n`;
-                code += `        console.log("${which} : bouton introuvable (#${btnId})");\n`;
-                code += `    }\n`;
-            }
+`;
 
-            code += `}, ${which}Time.getTime() - new Date().getTime());\n\n`;
+        code += `  function getDelayMs(timeStr) {
+`;
+        code += `    var now = new Date();
+`;
+        code += `    var target = new Date();
+`;
+        code += `    target.setHours(...timeStr.split(':'));
+`;
+        code += `    var diff = target.getTime() - now.getTime();
+`;
+        code += `    return diff > 0 ? diff : 0;
+`;
+        code += `  }
+
+`;
+
+        code += `  function getVisiblePlayButton() {
+`;
+        code += `    var btns = document.querySelectorAll('.play-btn.visible');
+`;
+        code += `    for (var i = 0; i < btns.length; i++) {
+`;
+        code += `      if (!btns[i].disabled && btns[i].offsetParent !== null) {
+`;
+        code += `        return btns[i];
+`;
+        code += `      }
+`;
+        code += `    }
+`;
+        code += `    return null;
+`;
+        code += `  }
+
+`;
+
+        code += `  function clickPlayVisible(label) {
+`;
+        code += `    var btn = getVisiblePlayButton();
+`;
+        code += `    if (btn) {
+`;
+        code += `      btn.click();
+`;
+        code += `      console.log(label + " : bouton Play visible cliqué", btn);
+`;
+        code += `    } else {
+`;
+        code += `      console.log(label + " : aucun bouton .play-btn.visible cliquable trouvé");
+`;
+        code += `    }
+`;
+        code += `  }
+
+`;
+
+        code += `  function clickBtnTerminer(label) {
+`;
+        code += `    var btn = document.querySelector('.btn-terminer');
+`;
+        code += `    if (!btn) {
+`;
+        code += `      console.log(label + " : bouton .btn-terminer introuvable");
+`;
+        code += `      return;
+`;
+        code += `    }
+`;
+        code += `    var __origConfirm__ = window.confirm;
+`;
+        code += `    window.confirm = function(){ return true; };
+`;
+        code += `    console.log(label + " : confirm() forcé à OK pendant 10s");
+`;
+        code += `    btn.click();
+`;
+        code += `    console.log(label + " : bouton 'Terminer la journée' cliqué", btn);
+`;
+        code += `    setTimeout(function(){
+`;
+        code += `      window.confirm = __origConfirm__;
+`;
+        code += `      console.log(label + " : confirm() restauré");
+`;
+        code += `    }, 10000);
+`;
+        code += `  }
+
+`;
+
+        code += `  function scheduleAction(label, type, timeStr) {
+`;
+        code += `    var delay = getDelayMs(timeStr);
+`;
+        code += `    console.log(label + " programmé pour " + timeStr + " (dans " + delay + " ms)");
+`;
+        code += `    setTimeout(function() {
+`;
+        code += `      if (type === 'playVisible') {
+`;
+        code += `        clickPlayVisible(label);
+`;
+        code += `      } else if (type === 'btnTerminer') {
+`;
+        code += `        clickBtnTerminer(label);
+`;
+        code += `      }
+`;
+        code += `    }, delay);
+`;
+        code += `  }
+
+`;
+
+        function addSchedule(which, btnId, timeVal) {
+            code += `  scheduleAction("${which}", "${btnId}", "${timeVal}");
+`;
         }
 
-        // Premier bouton
-        addClickBlock('firstButton', firstButtonId, firstButtonTimeVal);
+        addSchedule('firstButton', firstButtonId, firstButtonTimeVal);
 
-        // Deuxième bouton
         if (action === 'double' || action === 'triple') {
-            addClickBlock('secondButton', secondButtonId, secondButtonTimeVal);
+            addSchedule('secondButton', secondButtonId, secondButtonTimeVal);
         }
 
-        // Troisième bouton
         if (action === 'triple') {
-            addClickBlock('thirdButton', thirdButtonId, thirdButtonTimeVal);
+            addSchedule('thirdButton', thirdButtonId, thirdButtonTimeVal);
         }
+
+        code += `})();`;
 
         generatedCode.value = code;
     });
@@ -934,6 +836,5 @@ Résultat :
 </script>
 </body>
 </html>
-
 
 
