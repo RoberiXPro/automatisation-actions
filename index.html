@@ -66,6 +66,24 @@
     }
     .panel-body,.mini-body{padding:22px 24px 24px}
     .section-label{margin:0 0 12px;color:#9eb6eb;font-size:.78rem;text-transform:uppercase;letter-spacing:.16em}
+    .timezone-alert{
+      display:none;
+      margin-bottom:18px;
+      padding:14px 16px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg, rgba(0,215,255,.10), rgba(124,92,255,.08));
+      color:#e8f6ff;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+      line-height:1.55;
+      font-size:.92rem;
+    }
+    .timezone-alert strong{
+      display:block;
+      margin-bottom:4px;
+      font-size:.95rem;
+    }
+
     .action-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:22px}
     .pick{position:relative;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));min-height:112px;overflow:hidden}
     .pick input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
@@ -112,15 +130,71 @@
     .history-empty{color:var(--muted);font-size:.87rem;border:1px dashed rgba(255,255,255,.10);border-radius:18px;padding:14px;background:rgba(255,255,255,.02)}
     .history-item{border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.03)}
     .history-toggle{
-      width:100%;border:none;background:transparent;color:var(--txt);cursor:pointer;padding:14px 14px 12px;
-      display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left
+  width:100%;
+  border:none;
+  background:transparent;
+  color:var(--txt);
+  cursor:pointer;
+  padding:14px 14px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  text-align:left;
+}
+    .history-meta{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      flex:1 1 auto;
+      min-width:0;
     }
-    .history-meta{display:grid;gap:4px}
-    .history-title{font-size:.92rem;font-weight:800}
-    .history-date{color:var(--muted);font-size:.77rem}
+    .history-title{
+      font-size:.92rem;
+      font-weight:800;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .history-date{
+      color:var(--muted);
+      font-size:.77rem;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
     .history-arrow{
       width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border-radius:999px;color:var(--muted);
       background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:transform .18s ease;font-size:.9rem;line-height:1
+    }
+    .history-head-actions{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      flex:0 0 auto;
+      margin-left:auto;
+      white-space:nowrap;
+    }
+    .history-delete-head{
+      width:28px;
+      height:28px;
+      flex:0 0 28px;
+      display:grid;
+      place-items:center;
+      border-radius:999px;
+      color:#ffd6de;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      cursor:pointer;
+      transition:transform .18s ease, background .18s ease;
+      font-size:.85rem;
+      line-height:1;
+      padding:0;
+    }
+    .history-delete-head:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.08);
     }
     .history-item.open .history-arrow{transform:rotate(180deg)}
     .history-content{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,.06)}
@@ -157,56 +231,59 @@
       .app{width:min(100% - 14px,100%)}.hero{padding:18px}.panel-head,.panel-body,.mini-body{padding-left:16px;padding-right:16px}
       .action-picker{grid-template-columns:1fr}.btn{width:100%;justify-content:center}.tool-row,.history-actions{flex-direction:column}
       .history-edit-row,.history-summary-row{grid-template-columns:1fr}
+      .history-toggle{align-items:flex-start}
     }
   </style>
 </head>
 <body>
   <div class="app">
     <section class="hero">
-      <div class="eyebrow"><span class="pulse"></span> Automaka TT · version simplifiée</div>
+      <div class="eyebrow"><span class="pulse"></span> Automaka TT · version 2026</div>
       <h1><span class="grad">Tu veux programmer quoi ?</span></h1>
-      <p>Tu coches les actions. Les champs utiles se déplient dessous. Tu génères. Tu copies. Terminé.</p>
+      <p>Coche une ou plusieurs actions. Les horaires apparaissent automatiquement. Tu génères. Tu copies. Tu appuies sur F12 sur ton clavier. Tu colles le code dans Console. Tu valides avec Entrée. Tu fermes la fenetre du console.</p>
     </section>
 
     <div class="layout">
       <section class="panel">
-        <div class="panel-head">
-          <div>
-            <div class="panel-title">Scénario à programmer</div>
-            <div class="panel-sub">Coche une ou plusieurs actions. Les horaires associés apparaissent automatiquement.</div>
-          </div>
-          <div class="chip">JS prêt pour F12 → Console</div>
-        </div>
+
 
         <div class="panel-body">
-          <div class="section-label">Choix des actions</div>
+          <div id="timezoneAlert" class="timezone-alert"></div>
+
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Choisissez ce que vous voulez programmer</div>
+                      </div>
+  
+        </div>
+
           <div class="action-picker">
             <label class="pick">
               <input type="checkbox" class="action-check" value="startShift" data-step="step-startShift">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🟢</div><div class="check">✓</div></div>
-                <strong>Début shift</strong><span>Clique sur le Play visible pour démarrer le travail.</span>
+                <strong>Début shift</strong><span>Clique sur le bouton Play bleu pour démarrer le travail.</span>
               </div>
             </label>
             <label class="pick">
               <input type="checkbox" class="action-check" value="startLunch" data-step="step-startLunch">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🍽️</div><div class="check">✓</div></div>
-                <strong>Début pause dej</strong><span>Clique sur le Play visible au moment de la pause déjeuner.</span>
+                <strong>Début pause dej</strong><span>Clique sur le bouton Play bleu pour démarrer la pause déjeuner.</span>
               </div>
             </label>
             <label class="pick">
               <input type="checkbox" class="action-check" value="endLunch" data-step="step-endLunch">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🔁</div><div class="check">✓</div></div>
-                <strong>Fin pause dej</strong><span>Clique sur le Play visible pour reprendre la production.</span>
+                <strong>Fin pause dej</strong><span>Clique sur le boutron Play bleu pour terminer la pause déj et reprendre le travail.</span>
               </div>
             </label>
             <label class="pick">
               <input type="checkbox" class="action-check" value="endDay" data-step="step-endDay">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🏁</div><div class="check">✓</div></div>
-                <strong>Terminer la journée</strong><span>Clique sur le bouton de fin avec OK automatique.</span>
+                <strong>Terminer la journée</strong><span>Clique sur le bouton de Terminer la journée, qui sera validé par le bouton OK automatiquement.</span>
               </div>
             </label>
           </div>
@@ -250,7 +327,7 @@
         <section class="mini">
           <div class="mini-body">
             <div class="panel-title">Historique des actions programmées récemment</div>
-            <div class="panel-sub">Chaque entrée sert de modèle réutilisable. Tu ouvres, tu modifies les heures, tu valides, et le nouveau code est copié direct.</div>
+            <div class="panel-sub">Vous pouvez recopié et réutiliser une action pour éviter de reprogrammer toujours à la meme heure</div>
             <div class="history-topbar">
               <button class="btn btn-secondary" id="clearHistoryBtn" type="button">🗑️ Vider l’historique</button>
             </div>
@@ -294,6 +371,20 @@
     const actionChecks = document.querySelectorAll('.action-check');
     const generatedCode = document.getElementById('generatedCode');
     const historyList = document.getElementById('historyList');
+    const timezoneAlert = document.getElementById('timezoneAlert');
+
+    function updateTimezoneAlert() {
+      const madaTZ = 'Indian/Antananarivo';
+      const userTZ = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+
+      if (userTZ && userTZ !== madaTZ) {
+        timezoneAlert.innerHTML = `<strong>Fuseau détecté : ${escapeHtml(userTZ)}</strong>Ne vous souciez pas de l’heure du PC. Saisissez vos horaires en heure Madagascar. `;
+        timezoneAlert.style.display = 'block';
+      } else {
+        timezoneAlert.style.display = 'none';
+        timezoneAlert.innerHTML = '';
+      }
+    }
 
     function syncSteps() {
       actionChecks.forEach(input => {
@@ -307,8 +398,82 @@
       return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
     }
 
+    function normalizeTime(value) {
+      if (!value) return '';
+      const parts = String(value).split(':');
+      const hh = String(parts[0] || '00').padStart(2, '0');
+      const mm = String(parts[1] || '00').padStart(2, '0');
+      const ss = String(parts[2] || '00').padStart(2, '0');
+      return `${hh}:${mm}:${ss}`;
+    }
+
+    function getTimePartsInZone(date, timeZone) {
+      const dtf = new Intl.DateTimeFormat('en-CA', {
+        timeZone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      });
+      const parts = {};
+      for (const p of dtf.formatToParts(date)) {
+        if (p.type !== 'literal') parts[p.type] = p.value;
+      }
+      return {
+        year: Number(parts.year),
+        month: Number(parts.month),
+        day: Number(parts.day),
+        hour: Number(parts.hour),
+        minute: Number(parts.minute),
+        second: Number(parts.second)
+      };
+    }
+
+    function zonedTimeToUtc(timeZone, year, month, day, hour, minute, second) {
+      const approxUtc = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+      const zoneParts = getTimePartsInZone(approxUtc, timeZone);
+      const asIfUtc = Date.UTC(
+        zoneParts.year, zoneParts.month - 1, zoneParts.day,
+        zoneParts.hour, zoneParts.minute, zoneParts.second
+      );
+      const desired = Date.UTC(year, month - 1, day, hour, minute, second);
+      return new Date(approxUtc.getTime() - (asIfUtc - desired));
+    }
+
+    function convertMadagascarTimeToLocal(timeStr) {
+      const normalized = normalizeTime(timeStr);
+      const [hh, mm, ss] = normalized.split(':').map(Number);
+      const now = new Date();
+      const madaNow = getTimePartsInZone(now, 'Indian/Antananarivo');
+
+      let targetUtc = zonedTimeToUtc(
+        'Indian/Antananarivo',
+        madaNow.year, madaNow.month, madaNow.day,
+        hh, mm, ss
+      );
+
+      // If the target time in Madagascar is already passed for today, schedule next day.
+      if (targetUtc.getTime() <= now.getTime()) {
+        const nextMadaMidnightUtc = zonedTimeToUtc(
+          'Indian/Antananarivo',
+          madaNow.year, madaNow.month, madaNow.day + 1,
+          hh, mm, ss
+        );
+        targetUtc = nextMadaMidnightUtc;
+      }
+
+      const localHH = String(targetUtc.getHours()).padStart(2, '0');
+      const localMM = String(targetUtc.getMinutes()).padStart(2, '0');
+      const localSS = String(targetUtc.getSeconds()).padStart(2, '0');
+      return `${localHH}:${localMM}:${localSS}`;
+    }
+
     function buildPlayVisibleBlock(which, timeVal, label){
       return `
+// Heure saisie en Madagascar convertie en heure locale du PC : ${timeVal}
 var ${which}Time = new Date();
 ${which}Time.setHours(... "${timeVal}".split(':'));
 setTimeout(function() {
@@ -336,6 +501,7 @@ setTimeout(function() {
 
     function buildTerminerBlock(which, timeVal, label){
       return `
+// Heure saisie en Madagascar convertie en heure locale du PC : ${timeVal}
 var ${which}Time = new Date();
 ${which}Time.setHours(... "${timeVal}".split(':'));
 setTimeout(function() {
@@ -361,9 +527,11 @@ setTimeout(function() {
     }
 
     function buildActionScript(which, action, timeVal) {
+      const normalizedMadagascarTime = normalizeTime(timeVal);
+      const localTimeVal = convertMadagascarTimeToLocal(normalizedMadagascarTime);
       return action.type === 'dayTerminer'
-        ? buildTerminerBlock(which, timeVal, action.label)
-        : buildPlayVisibleBlock(which, timeVal, action.label);
+        ? buildTerminerBlock(which, localTimeVal, action.label)
+        : buildPlayVisibleBlock(which, localTimeVal, action.label);
     }
 
     function getSelectedActions() {
@@ -429,7 +597,7 @@ setTimeout(function() {
               <div class="history-title">${escapeHtml(item.title)}</div>
               <div class="history-date">${escapeHtml(item.createdAtLabel)}</div>
             </div>
-            <div class="history-arrow">▾</div>
+            <div class="history-head-actions"><span class="history-delete-head" role="button" tabindex="0" title="Supprimer">🗑️</span><div class="history-arrow">▾</div></div>
           </button>
 
           <div class="history-content">
@@ -437,7 +605,7 @@ setTimeout(function() {
               ${item.actionsMeta.map(action => `
                 <div class="history-summary-row">
                   <div class="history-summary-label">${escapeHtml(action.label)}</div>
-                  <div class="history-summary-time">${escapeHtml(action.time)}</div>
+                  <div class="history-summary-time">${escapeHtml(normalizeTime(action.time))}</div>
                 </div>
               `).join('')}
             </div>
@@ -449,14 +617,14 @@ setTimeout(function() {
                     <div class="history-time-label">${escapeHtml(action.label)}</div>
                     <div class="history-mini-note">Modifie seulement l’heure ici</div>
                   </div>
-                  <input class="history-time-input" type="time" step="1" value="${escapeHtml(action.time)}" data-key="${escapeHtml(action.key)}">
+                  <input class="history-time-input" type="time" step="1" value="${escapeHtml(normalizeTime(action.time))}" data-key="${escapeHtml(action.key)}">
                 </div>
               `).join('')}
             </div>
 
             <div class="history-actions">
-              <button class="btn btn-secondary history-copy" type="button">📋 Copier</button>
               <button class="btn btn-secondary history-update" type="button">⚡ Valider les nouveaux horaires</button>
+              <button class="btn btn-secondary history-copy" type="button">📋 Copier</button>
               <button class="btn btn-secondary history-toggle-code" type="button">👁️ Afficher le code</button>
               <button class="btn btn-secondary history-delete" type="button">🗑️ Supprimer cette entrée</button>
             </div>
@@ -468,6 +636,22 @@ setTimeout(function() {
 
       historyList.querySelectorAll('.history-toggle').forEach(btn => {
         btn.addEventListener('click', () => btn.closest('.history-item').classList.toggle('open'));
+      });
+
+      historyList.querySelectorAll('.history-delete-head').forEach((btn, index) => {
+        const removeItem = (e) => {
+          e.stopPropagation();
+          const history = getHistory();
+          history.splice(index, 1);
+          saveHistory(history);
+          renderHistory();
+        };
+        btn.addEventListener('click', removeItem);
+        btn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            removeItem(e);
+          }
+        });
       });
 
       historyList.querySelectorAll('.history-copy').forEach((btn, index) => {
@@ -507,7 +691,7 @@ setTimeout(function() {
 
           const newActionsMeta = item.actionsMeta.map(action => {
             const input = itemEl.querySelector(`.history-time-input[data-key="${action.key}"]`);
-            return { ...action, time: input ? input.value : action.time };
+            return { ...action, time: normalizeTime(input ? input.value : action.time) };
           });
 
           for (const action of newActionsMeta) {
@@ -538,7 +722,7 @@ setTimeout(function() {
           const reopened = historyList.querySelector(`.history-item[data-index="${index}"]`);
           if (reopened) reopened.classList.add('open');
 
-          alert('Nouveau code généré et copié.');
+          alert('Nouveaux horaires validés et code copié.');
         });
       });
     }
@@ -554,7 +738,7 @@ setTimeout(function() {
       let code = '';
       for (let i = 0; i < selectedActions.length; i++) {
         const action = selectedActions[i];
-        const timeVal = document.getElementById(`time-${action.key}`).value;
+        const timeVal = normalizeTime(document.getElementById(`time-${action.key}`).value);
         if (!timeVal) {
           alert(`Choisis l'heure pour : ${action.label}.`);
           return;
@@ -619,6 +803,7 @@ setTimeout(function() {
     });
 
     syncSteps();
+    updateTimezoneAlert();
     renderHistory();
   </script>
 </body>
