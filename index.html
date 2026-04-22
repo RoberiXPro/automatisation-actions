@@ -17,6 +17,22 @@
       --accent2:#00d7ff;
       --accent3:#4ade80;
       --shadow:0 24px 70px rgba(0,0,0,.42);
+
+      --c-shift-1:#79f2c0;
+      --c-shift-2:#34d399;
+      --c-shift-soft:rgba(121,242,192,.14);
+
+      --c-lunch-1:#ff6ad5;
+      --c-lunch-2:#8b5cf6;
+      --c-lunch-soft:rgba(255,106,213,.14);
+
+      --c-return-1:#818cf8;
+      --c-return-2:#22d3ee;
+      --c-return-soft:rgba(129,140,248,.14);
+
+      --c-end-1:#f9a8d4;
+      --c-end-2:#ec4899;
+      --c-end-soft:rgba(236,72,153,.14);
     }
     *{box-sizing:border-box}
     html,body{margin:0;padding:0}
@@ -84,6 +100,159 @@
       font-size:.95rem;
     }
 
+
+    /* Action colors */
+    .pick.action-shift{
+      border-color:rgba(121,242,192,.22);
+      background:
+        linear-gradient(180deg, rgba(121,242,192,.08), rgba(52,211,153,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    }
+    .pick.action-shift .pick-icon{
+      background:linear-gradient(135deg, rgba(121,242,192,.22), rgba(52,211,153,.16));
+      border-color:rgba(121,242,192,.24);
+      box-shadow:0 0 0 1px rgba(121,242,192,.08) inset;
+    }
+    .pick.action-shift input:checked + .pick-card{
+      background:linear-gradient(180deg, rgba(121,242,192,.18), rgba(52,211,153,.10));
+      box-shadow:inset 0 0 0 1px rgba(121,242,192,.32), 0 10px 30px rgba(52,211,153,.08);
+    }
+
+    .pick.action-lunch{
+      border-color:rgba(255,106,213,.22);
+      background:
+        linear-gradient(180deg, rgba(255,106,213,.08), rgba(139,92,246,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    }
+    .pick.action-lunch .pick-icon{
+      background:linear-gradient(135deg, rgba(255,106,213,.22), rgba(139,92,246,.16));
+      border-color:rgba(255,106,213,.24);
+      box-shadow:0 0 0 1px rgba(255,106,213,.08) inset;
+    }
+    .pick.action-lunch input:checked + .pick-card{
+      background:linear-gradient(180deg, rgba(255,106,213,.18), rgba(139,92,246,.11));
+      box-shadow:inset 0 0 0 1px rgba(255,106,213,.30), 0 10px 30px rgba(139,92,246,.08);
+    }
+
+    .pick.action-return{
+      border-color:rgba(129,140,248,.22);
+      background:
+        linear-gradient(180deg, rgba(129,140,248,.08), rgba(34,211,238,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    }
+    .pick.action-return .pick-icon{
+      background:linear-gradient(135deg, rgba(129,140,248,.22), rgba(34,211,238,.16));
+      border-color:rgba(129,140,248,.24);
+      box-shadow:0 0 0 1px rgba(129,140,248,.08) inset;
+    }
+    .pick.action-return input:checked + .pick-card{
+      background:linear-gradient(180deg, rgba(129,140,248,.18), rgba(34,211,238,.11));
+      box-shadow:inset 0 0 0 1px rgba(129,140,248,.30), 0 10px 30px rgba(34,211,238,.08);
+    }
+
+    .pick.action-end{
+      border-color:rgba(236,72,153,.22);
+      background:
+        linear-gradient(180deg, rgba(249,168,212,.08), rgba(236,72,153,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));
+    }
+    .pick.action-end .pick-icon{
+      background:linear-gradient(135deg, rgba(249,168,212,.22), rgba(236,72,153,.16));
+      border-color:rgba(249,168,212,.24);
+      box-shadow:0 0 0 1px rgba(249,168,212,.08) inset;
+    }
+    .pick.action-end input:checked + .pick-card{
+      background:linear-gradient(180deg, rgba(249,168,212,.18), rgba(236,72,153,.10));
+      box-shadow:inset 0 0 0 1px rgba(249,168,212,.30), 0 10px 30px rgba(236,72,153,.08);
+    }
+
+    .step.step-shift{
+      border-color:rgba(121,242,192,.22);
+      background:
+        linear-gradient(180deg, rgba(121,242,192,.10), rgba(52,211,153,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    }
+    .step.step-lunch{
+      border-color:rgba(255,106,213,.22);
+      background:
+        linear-gradient(180deg, rgba(255,106,213,.10), rgba(139,92,246,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    }
+    .step.step-return{
+      border-color:rgba(129,140,248,.22);
+      background:
+        linear-gradient(180deg, rgba(129,140,248,.10), rgba(34,211,238,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    }
+    .step.step-end{
+      border-color:rgba(249,168,212,.22);
+      background:
+        linear-gradient(180deg, rgba(249,168,212,.10), rgba(236,72,153,.05)),
+        linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));
+    }
+
+    .step.step-shift .num,
+    .step.step-shift .step-badge{
+      background:linear-gradient(135deg, rgba(121,242,192,.22), rgba(52,211,153,.16));
+      border-color:rgba(121,242,192,.24);
+      color:#eafff6;
+    }
+    .step.step-lunch .num,
+    .step.step-lunch .step-badge{
+      background:linear-gradient(135deg, rgba(255,106,213,.22), rgba(139,92,246,.16));
+      border-color:rgba(255,106,213,.24);
+      color:#fff0fb;
+    }
+    .step.step-return .num,
+    .step.step-return .step-badge{
+      background:linear-gradient(135deg, rgba(129,140,248,.22), rgba(34,211,238,.16));
+      border-color:rgba(129,140,248,.24);
+      color:#eef4ff;
+    }
+    .step.step-end .num,
+    .step.step-end .step-badge{
+      background:linear-gradient(135deg, rgba(249,168,212,.22), rgba(236,72,153,.16));
+      border-color:rgba(249,168,212,.24);
+      color:#fff1f7;
+    }
+
+    .step.step-shift input[type="time"]{
+      border-color:rgba(121,242,192,.24);
+      background:
+        linear-gradient(180deg, rgba(121,242,192,.08), rgba(52,211,153,.04)),
+        rgba(2,7,22,.85);
+      color:#f3fffa;
+      box-shadow:0 0 0 1px rgba(121,242,192,.08) inset;
+    }
+    .step.step-lunch input[type="time"]{
+      border-color:rgba(255,106,213,.24);
+      background:
+        linear-gradient(180deg, rgba(255,106,213,.08), rgba(139,92,246,.04)),
+        rgba(2,7,22,.85);
+      color:#fff7fd;
+      box-shadow:0 0 0 1px rgba(255,106,213,.08) inset;
+    }
+    .step.step-return input[type="time"]{
+      border-color:rgba(129,140,248,.24);
+      background:
+        linear-gradient(180deg, rgba(129,140,248,.08), rgba(34,211,238,.04)),
+        rgba(2,7,22,.85);
+      color:#f5faff;
+      box-shadow:0 0 0 1px rgba(129,140,248,.08) inset;
+    }
+    .step.step-end input[type="time"]{
+      border-color:rgba(249,168,212,.24);
+      background:
+        linear-gradient(180deg, rgba(249,168,212,.08), rgba(236,72,153,.04)),
+        rgba(2,7,22,.85);
+      color:#fff7fa;
+      box-shadow:0 0 0 1px rgba(249,168,212,.08) inset;
+    }
+
+    .step.step-shift .time-wrap::before{filter:drop-shadow(0 0 8px rgba(121,242,192,.18))}
+    .step.step-lunch .time-wrap::before{filter:drop-shadow(0 0 8px rgba(255,106,213,.18))}
+    .step.step-return .time-wrap::before{filter:drop-shadow(0 0 8px rgba(129,140,248,.18))}
+    .step.step-end .time-wrap::before{filter:drop-shadow(0 0 8px rgba(249,168,212,.18))}
     .action-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:22px}
     .pick{position:relative;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));min-height:112px;overflow:hidden}
     .pick input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
@@ -258,28 +427,28 @@
         </div>
 
           <div class="action-picker">
-            <label class="pick">
+            <label class="pick action-shift">
               <input type="checkbox" class="action-check" value="startShift" data-step="step-startShift">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🟢</div><div class="check">✓</div></div>
                 <strong>Début shift</strong><span>Clique sur le bouton Play bleu pour démarrer le travail.</span>
               </div>
             </label>
-            <label class="pick">
+            <label class="pick action-lunch">
               <input type="checkbox" class="action-check" value="startLunch" data-step="step-startLunch">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🍽️</div><div class="check">✓</div></div>
                 <strong>Début pause dej</strong><span>Clique sur le bouton Play bleu pour démarrer la pause déjeuner.</span>
               </div>
             </label>
-            <label class="pick">
+            <label class="pick action-return">
               <input type="checkbox" class="action-check" value="endLunch" data-step="step-endLunch">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🔁</div><div class="check">✓</div></div>
                 <strong>Fin pause dej</strong><span>Clique sur le boutron Play bleu pour terminer la pause déj et reprendre le travail.</span>
               </div>
             </label>
-            <label class="pick">
+            <label class="pick action-end">
               <input type="checkbox" class="action-check" value="endDay" data-step="step-endDay">
               <div class="pick-card">
                 <div class="pick-top"><div class="pick-icon">🏁</div><div class="check">✓</div></div>
@@ -290,19 +459,19 @@
 
           <div class="section-label">Horaires</div>
           <div class="steps">
-            <div class="step" id="step-startShift">
+            <div class="step step-shift" id="step-startShift">
               <div class="step-head"><div class="step-title"><span class="num">1</span> Heure du début shift</div><div class="step-badge">Play visible</div></div>
               <div class="time-wrap"><input type="time" id="time-startShift" step="1"></div>
             </div>
-            <div class="step" id="step-startLunch">
+            <div class="step step-lunch" id="step-startLunch">
               <div class="step-head"><div class="step-title"><span class="num">2</span> Heure du début pause dej</div><div class="step-badge">Play visible</div></div>
               <div class="time-wrap"><input type="time" id="time-startLunch" step="1"></div>
             </div>
-            <div class="step" id="step-endLunch">
+            <div class="step step-return" id="step-endLunch">
               <div class="step-head"><div class="step-title"><span class="num">3</span> Heure de fin pause dej</div><div class="step-badge">Play visible</div></div>
               <div class="time-wrap"><input type="time" id="time-endLunch" step="1"></div>
             </div>
-            <div class="step" id="step-endDay">
+            <div class="step step-end" id="step-endDay">
               <div class="step-head"><div class="step-title"><span class="num">4</span> Heure de fin de journée</div><div class="step-badge">OK auto</div></div>
               <div class="time-wrap"><input type="time" id="time-endDay" step="1"></div>
             </div>
