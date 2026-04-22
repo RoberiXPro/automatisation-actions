@@ -1,840 +1,625 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Automaka TT</title>
-    <style>
-        :root {
-            --bg: #050816;
-            --bg-card: #0b1020;
-            --bg-card-soft: #11172a;
-            --accent: #4f46e5;
-            --accent-soft: rgba(79, 70, 229, 0.15);
-            --accent-gradient: linear-gradient(135deg, #4f46e5, #22c55e);
-            --text: #f9fafb;
-            --text-soft: #9ca3af;
-            --border-subtle: rgba(148, 163, 184, 0.25);
-            --danger: #ef4444;
-            --danger-soft: rgba(239, 68, 68, 0.15);
-            --radius-lg: 18px;
-            --radius-md: 10px;
-            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.7);
-            --input-bg: #020617;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: radial-gradient(circle at top, #1d243a 0, #050816 45%);
-            color: var(--text);
-            padding: 24px;
-            margin: 0;
-        }
-
-        .page-shell {
-            max-width: 1040px;
-            margin: 0 auto;
-        }
-
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-            margin-bottom: 18px;
-        }
-
-        .title-block h1 {
-            margin: 0;
-            font-size: 1.7rem;
-            letter-spacing: .03em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .title-pill {
-            font-size: .7rem;
-            text-transform: uppercase;
-            letter-spacing: .16em;
-            padding: 4px 10px;
-            border-radius: 999px;
-            border: 1px solid var(--border-subtle);
-            color: var(--text-soft);
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #22c55e;
-            box-shadow: 0 0 8px rgba(34, 197, 94, .7);
-        }
-
-        .title-block p {
-            margin: 6px 0 0;
-            font-size: .9rem;
-            color: var(--text-soft);
-        }
-
-        .header-badge {
-            padding: 8px 12px;
-            border-radius: 999px;
-            background: rgba(15,23,42,.85);
-            border: 1px solid rgba(148,163,184,.35);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: .8rem;
-            color: var(--text-soft);
-        }
-
-        .header-badge span.tag {
-            padding: 3px 8px;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            color: #e5e7ff;
-            font-size: .7rem;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
-            gap: 20px;
-        }
-
-        @media (max-width: 900px) {
-            .grid {
-                grid-template-columns: 1fr;
-            }
-            .header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-        }
-
-        .card {
-            background: radial-gradient(circle at top, rgba(79,70,229,.18), transparent 55%), var(--bg-card);
-            border-radius: var(--radius-lg);
-            padding: 20px 18px 18px;
-            border: 1px solid var(--border-subtle);
-            box-shadow: var(--shadow-soft);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-secondary {
-            background: radial-gradient(circle at top, rgba(34,197,94,.18), transparent 55%), var(--bg-card-soft);
-        }
-
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: -40%;
-            background: radial-gradient(circle at top, rgba(59,130,246,0.07), transparent 55%);
-            opacity: 0.7;
-            pointer-events: none;
-        }
-
-        .card-inner {
-            position: relative;
-            z-index: 1;
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 14px;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-title-icon {
-            width: 26px;
-            height: 26px;
-            border-radius: 999px;
-            background: var(--accent-soft);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: .85rem;
-        }
-
-        .card-subtitle {
-            font-size: .8rem;
-            color: var(--text-soft);
-        }
-
-        .pill {
-            padding: 4px 8px;
-            border-radius: 999px;
-            font-size: .7rem;
-            text-transform: uppercase;
-            letter-spacing: .12em;
-            border: 1px solid rgba(148,163,184,.4);
-            color: var(--text-soft);
-        }
-
-        .pill-accent {
-            border-color: rgba(79,70,229,.6);
-            background: rgba(79,70,229,.06);
-            color: #c7d2ff;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: minmax(0, 1.3fr) minmax(0, .9fr);
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .form-group {
-            margin-bottom: 8px;
-        }
-
-        label {
-            font-size: .8rem;
-            font-weight: 500;
-            color: var(--text-soft);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 6px;
-        }
-
-        label span.hint {
-            font-size: .7rem;
-            color: #6b7280;
-            font-weight: 400;
-        }
-
-        select, input[type="time"] {
-            width: 100%;
-            padding: 8px 9px;
-            margin-top: 4px;
-            border-radius: 10px;
-            border: 1px solid rgba(148,163,184,0.45);
-            background: var(--input-bg);
-            color: var(--text);
-            font-size: .85rem;
-            outline: none;
-            transition: border .18s ease, box-shadow .18s ease, background .18s ease, transform .08s ease;
-        }
-
-        select:focus, input[type="time"]:focus, input[type="time"]:hover, select:hover {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 1px rgba(79,70,229,.4);
-            background: #020617;
-        }
-
-        textarea {
-            width: 100%;
-            padding: 10px 11px;
-            margin-top: 4px;
-            border-radius: 12px;
-            border: 1px solid rgba(148,163,184,0.45);
-            background: #020617;
-            color: var(--text);
-            font-size: .8rem;
-            resize: vertical;
-            min-height: 120px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 1px rgba(79,70,229,.4);
-        }
-
-        .btn-row {
-            display: flex;
-            justify-content: flex-end;
-            gap: 10px;
-            margin-top: 6px;
-        }
-
-        .btn {
-            border-radius: 999px;
-            border: none;
-            padding: 8px 16px;
-            font-size: .8rem;
-            font-weight: 500;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform .08s ease, box-shadow .18s ease, background .18s ease, opacity .12s ease;
-        }
-
-        .btn-primary {
-            background-image: var(--accent-gradient);
-            color: #f9fafb;
-            box-shadow: 0 10px 30px rgba(79,70,229,.55);
-        }
-
-        .btn-ghost {
-            background: transparent;
-            border: 1px solid rgba(148,163,184,.5);
-            color: var(--text-soft);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 14px 40px rgba(79,70,229,.7);
-        }
-
-        .btn-ghost:hover {
-            background: rgba(15,23,42,.9);
-        }
-
-        .btn:active {
-            transform: translateY(0);
-            box-shadow: none;
-        }
-
-        .badge-inline {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-size: .7rem;
-            color: var(--text-soft);
-        }
-
-        .badge-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: #22c55e;
-        }
-
-        .section-divider {
-            height: 1px;
-            width: 100%;
-            background: radial-gradient(circle, rgba(148,163,184,.7), transparent 70%);
-            margin: 18px 0 14px;
-        }
-
-        .hint-line {
-            font-size: .75rem;
-            color: var(--text-soft);
-            margin-top: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .hint-pill {
-            border-radius: 999px;
-            border: 1px solid rgba(148,163,184,.4);
-            padding: 2px 8px;
-            font-size: .7rem;
-        }
-
-
-        code {
-            background: rgba(15,23,42,.9);
-            border: 1px solid rgba(148,163,184,.25);
-            border-radius: 8px;
-            padding: 2px 6px;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Courier New", monospace;
-            font-size: .78rem;
-        }
-
-        .card:hover {
-            transform: translateY(-2px);
-            transition: transform .18s ease, box-shadow .18s ease;
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 12px;
-            padding: 8px;
-            font-size: .75rem;
-            color: var(--text-soft);
-            opacity: .8;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Automaka TT Ultra - Historique corrigé</title>
+  <style>
+    :root{
+      --bg:#050816;
+      --bg2:#0a1123;
+      --panel:rgba(8,14,30,.74);
+      --panel2:rgba(11,18,37,.82);
+      --line:rgba(255,255,255,.10);
+      --txt:#f7fbff;
+      --muted:#91a5cc;
+      --accent:#7c5cff;
+      --accent2:#00d7ff;
+      --accent3:#4ade80;
+      --shadow:0 24px 70px rgba(0,0,0,.42);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0}
+    body{
+      min-height:100vh;color:var(--txt);
+      font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(circle at 12% 10%, rgba(124,92,255,.20), transparent 22%),
+        radial-gradient(circle at 85% 14%, rgba(0,215,255,.14), transparent 22%),
+        radial-gradient(circle at 68% 85%, rgba(74,222,128,.08), transparent 18%),
+        linear-gradient(135deg, #02040c 0%, #07101f 42%, #030713 100%);
+      overflow-x:hidden;
+    }
+    .app{position:relative;z-index:1;width:min(1220px,calc(100% - 24px));margin:20px auto 32px}
+    .hero,.panel,.mini{
+      border:1px solid var(--line);
+      border-radius:32px;
+      background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02)), var(--panel);
+      backdrop-filter:blur(18px);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .hero{padding:28px;margin-bottom:20px}
+    .eyebrow{
+      display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#cfd9ff;
+      font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px
+    }
+    .pulse{width:10px;height:10px;border-radius:999px;background:var(--accent3);box-shadow:0 0 16px rgba(74,222,128,.85)}
+    h1{margin:0;font-size:clamp(2rem,5vw,3.6rem);line-height:.96;letter-spacing:-.05em;max-width:760px}
+    .grad{
+      background:linear-gradient(90deg,#ffffff 0%,#d7ddff 35%,#8decff 70%,#bef8d5 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent
+    }
+    .hero p{margin:14px 0 0;max-width:780px;color:var(--muted);font-size:1rem;line-height:1.65}
+    .layout{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,.95fr);gap:20px}
+    .panel-head{
+      padding:22px 24px 14px;border-bottom:1px solid rgba(255,255,255,.06);
+      background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,0));
+      display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start
+    }
+    .panel-title{margin:0;font-size:1.12rem;font-weight:800;letter-spacing:-.02em}
+    .panel-sub{margin-top:6px;color:var(--muted);font-size:.92rem;line-height:1.55}
+    .chip{
+      display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:#dfeaff;font-size:.78rem;white-space:nowrap
+    }
+    .panel-body,.mini-body{padding:22px 24px 24px}
+    .section-label{margin:0 0 12px;color:#9eb6eb;font-size:.78rem;text-transform:uppercase;letter-spacing:.16em}
+    .action-picker{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:22px}
+    .pick{position:relative;border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.02));min-height:112px;overflow:hidden}
+    .pick input{position:absolute;inset:0;opacity:0;cursor:pointer;z-index:2}
+    .pick-card{height:100%;padding:16px;transition:.2s ease}
+    .pick input:checked + .pick-card{background:linear-gradient(180deg,rgba(0,215,255,.09),rgba(124,92,255,.07));box-shadow:inset 0 0 0 1px rgba(0,215,255,.28)}
+    .pick-top{display:flex;justify-content:space-between;gap:8px;align-items:flex-start;margin-bottom:10px}
+    .pick-icon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);font-size:1.05rem}
+    .check{width:22px;height:22px;border-radius:999px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.04);display:grid;place-items:center;color:transparent;font-size:.78rem}
+    .pick input:checked + .pick-card .check{background:linear-gradient(135deg,var(--accent),var(--accent2));color:white;border-color:transparent}
+    .pick strong{display:block;font-size:.96rem;margin-bottom:4px}
+    .pick span{display:block;color:var(--muted);font-size:.82rem;line-height:1.45}
+    .steps{display:grid;gap:14px}
+    .step{display:none;border:1px solid var(--line);border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.02));padding:16px}
+    .step.active{display:block}
+    .step-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
+    .step-title{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1rem}
+    .num{width:36px;height:36px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,rgba(124,92,255,.26),rgba(0,215,255,.20));border:1px solid rgba(255,255,255,.10)}
+    .step-badge{padding:8px 10px;border-radius:999px;border:1px solid rgba(255,255,255,.10);background:rgba(255,255,255,.03);color:var(--muted);font-size:.76rem}
+    .time-wrap{position:relative}
+    .time-wrap::before{content:"🕒";position:absolute;left:14px;top:50%;transform:translateY(-50%);font-size:.95rem;pointer-events:none}
+    input[type="time"]{
+      width:100%;height:58px;border-radius:18px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(2,7,22,.85);color:var(--txt);padding:0 16px 0 44px;font-size:1rem;outline:none
+    }
+    .tool-row,.history-actions{display:flex;gap:10px;flex-wrap:wrap}
+    .tool-row{margin-top:18px}
+    .btn{
+      border:none;cursor:pointer;border-radius:18px;padding:14px 18px;font-size:.95rem;font-weight:800;
+      letter-spacing:.01em;display:inline-flex;align-items:center;gap:10px;transition:.18s ease
+    }
+    .btn-primary{color:white;background:linear-gradient(135deg,#7559ff 0%,#00d7ff 100%);box-shadow:0 18px 38px rgba(0,215,255,.17),0 10px 24px rgba(124,92,255,.24)}
+    .btn-secondary{color:#eaf2ff;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+    .result-head{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin-top:18px;margin-bottom:12px}
+    .caption{color:var(--muted);font-size:.86rem;line-height:1.45}
+    textarea{
+      width:100%;min-height:260px;resize:vertical;border-radius:24px;border:1px solid rgba(255,255,255,.10);
+      background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01)),rgba(1,6,20,.84);
+      color:#d9f2ff;padding:18px;outline:none;font-size:.85rem;line-height:1.55;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace
+    }
+    .side-stack{display:grid;gap:20px;align-self:start;position:sticky;top:20px;height:fit-content}
+    .history-topbar{display:flex;justify-content:flex-end;margin-top:14px;margin-bottom:4px}
+    .history-list{display:grid;gap:10px;margin-top:14px}
+    .history-empty{color:var(--muted);font-size:.87rem;border:1px dashed rgba(255,255,255,.10);border-radius:18px;padding:14px;background:rgba(255,255,255,.02)}
+    .history-item{border:1px solid rgba(255,255,255,.08);border-radius:20px;overflow:hidden;background:rgba(255,255,255,.03)}
+    .history-toggle{
+      width:100%;border:none;background:transparent;color:var(--txt);cursor:pointer;padding:14px 14px 12px;
+      display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left
+    }
+    .history-meta{display:grid;gap:4px}
+    .history-title{font-size:.92rem;font-weight:800}
+    .history-date{color:var(--muted);font-size:.77rem}
+    .history-arrow{
+      width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;border-radius:999px;color:var(--muted);
+      background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);transition:transform .18s ease;font-size:.9rem;line-height:1
+    }
+    .history-item.open .history-arrow{transform:rotate(180deg)}
+    .history-content{display:none;padding:0 14px 14px;border-top:1px solid rgba(255,255,255,.06)}
+    .history-item.open .history-content{display:block}
+    .history-summary{
+      display:grid;gap:8px;margin:12px 0 14px;padding:12px;border-radius:16px;
+      border:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02)
+    }
+    .history-summary-row{
+      display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center
+    }
+    .history-summary-label{font-size:.86rem;font-weight:700}
+    .history-summary-time{font-size:.84rem;color:#b8cdf5}
+    .history-edit-grid{display:grid;gap:10px;margin:12px 0 14px}
+    .history-edit-row{
+      display:grid;grid-template-columns:minmax(0,1fr) 150px;gap:10px;align-items:center;padding:10px 0;
+      border-bottom:1px solid rgba(255,255,255,.06)
+    }
+    .history-time-label{color:var(--txt);font-size:.86rem;font-weight:700}
+    .history-mini-note{color:var(--muted);font-size:.76rem;margin-top:2px;line-height:1.4}
+    .history-time-input{
+      width:100%;height:42px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      background:rgba(2,7,22,.85);color:var(--txt);padding:0 12px;font-size:.9rem;outline:none
+    }
+    .hidden-code{display:none !important}
+    .history-pre{
+      width:100%;max-height:240px;overflow:auto;margin:8px 0 0;border-radius:16px;border:1px solid rgba(255,255,255,.08);
+      background:rgba(1,6,20,.78);color:#d9f2ff;padding:14px;font-size:.8rem;line-height:1.5;white-space:pre-wrap;word-break:break-word;
+      font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono",monospace
+    }
+    .footer{text-align:center;color:#7d93be;font-size:.78rem;margin-top:16px;padding-top:4px}
+    @media (max-width:1040px){.layout{grid-template-columns:1fr}.side-stack{position:static}}
+    @media (max-width:760px){
+      .app{width:min(100% - 14px,100%)}.hero{padding:18px}.panel-head,.panel-body,.mini-body{padding-left:16px;padding-right:16px}
+      .action-picker{grid-template-columns:1fr}.btn{width:100%;justify-content:center}.tool-row,.history-actions{flex-direction:column}
+      .history-edit-row,.history-summary-row{grid-template-columns:1fr}
+    }
+  </style>
 </head>
 <body>
-<div class="page-shell">
-
-    <header class="header">
-        <div class="title-block">
-            <div class="title-pill">
-                <span class="status-dot"></span>
-                <span>BOB-ROBOT</span>
-            </div>
-            <h1>Outil d'automatisation</h1>
-            <p>Programme tes clics sur les boutons Play visibles et sur “Terminer la journée” à l'heure exacte.</p>
-        </div>
-        <div class="header-badge">
-            <span class="tag">Console</span>
-            <span>JS à coller dans F12 &gt; Console</span>
-        </div>
-    </header>
-
-    <section style="margin-bottom:18px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;">
-        <div class="card" style="padding:14px 16px;">
-            <div class="card-inner">
-                <div class="card-title" style="font-size:.92rem;"><span class="card-title-icon">▶️</span>Nouveau Play détecté</div>
-                <div class="card-subtitle">Le script clique désormais sur <strong>.play-btn.visible</strong>, donc sur le bouton Play réellement affiché du moment.</div>
-            </div>
-        </div>
-        <div class="card card-secondary" style="padding:14px 16px;">
-            <div class="card-inner">
-                <div class="card-title" style="font-size:.92rem;"><span class="card-title-icon">🏁</span>Fin de journée</div>
-                <div class="card-subtitle">Le bouton final ciblé est maintenant <strong>.btn-terminer</strong>, avec validation automatique du <code>confirm()</code>.</div>
-            </div>
-        </div>
+  <div class="app">
+    <section class="hero">
+      <div class="eyebrow"><span class="pulse"></span> Automaka TT · version simplifiée</div>
+      <h1><span class="grad">Tu veux programmer quoi ?</span></h1>
+      <p>Tu coches les actions. Les champs utiles se déplient dessous. Tu génères. Tu copies. Terminé.</p>
     </section>
 
-    <main class="grid">
-        <!-- ============ CARD 1 : CLICS PROGRAMMÉS ============ -->
-        <section class="card">
-            <div class="card-inner">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">
-                            <span class="card-title-icon">⚙️</span>
-                            Programmation des clics
-                        </div>
-                        <div class="card-subtitle">
-                            Choisis l'ordre des actions et les heures. Le script visera le Play visible puis le bouton final de fin de journée.
-                        </div>
-                    </div>
-                    <span class="pill pill-accent">Play visible · Btn terminer</span>
-                </div>
+    <div class="layout">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <div class="panel-title">Scénario à programmer</div>
+            <div class="panel-sub">Coche une ou plusieurs actions. Les horaires associés apparaissent automatiquement.</div>
+          </div>
+          <div class="chip">JS prêt pour F12 → Console</div>
+        </div>
 
-                <div class="form-group">
-                    <label for="actionType">
-                        Type d'automatisation
-                        <span class="hint">Ex. déjeuner, reprise, fin de journée</span>
-                    </label>
-                    <select id="actionType">
-                        <option value="simple">Simple action</option>
-                        <option value="double">Double action</option>
-                        <option value="triple">Triple action</option>
-                    </select>
-                </div>
+        <div class="panel-body">
+          <div class="section-label">Choix des actions</div>
+          <div class="action-picker">
+            <label class="pick">
+              <input type="checkbox" class="action-check" value="startShift" data-step="step-startShift">
+              <div class="pick-card">
+                <div class="pick-top"><div class="pick-icon">🟢</div><div class="check">✓</div></div>
+                <strong>Début shift</strong><span>Clique sur le Play visible pour démarrer le travail.</span>
+              </div>
+            </label>
+            <label class="pick">
+              <input type="checkbox" class="action-check" value="startLunch" data-step="step-startLunch">
+              <div class="pick-card">
+                <div class="pick-top"><div class="pick-icon">🍽️</div><div class="check">✓</div></div>
+                <strong>Début pause dej</strong><span>Clique sur le Play visible au moment de la pause déjeuner.</span>
+              </div>
+            </label>
+            <label class="pick">
+              <input type="checkbox" class="action-check" value="endLunch" data-step="step-endLunch">
+              <div class="pick-card">
+                <div class="pick-top"><div class="pick-icon">🔁</div><div class="check">✓</div></div>
+                <strong>Fin pause dej</strong><span>Clique sur le Play visible pour reprendre la production.</span>
+              </div>
+            </label>
+            <label class="pick">
+              <input type="checkbox" class="action-check" value="endDay" data-step="step-endDay">
+              <div class="pick-card">
+                <div class="pick-top"><div class="pick-icon">🏁</div><div class="check">✓</div></div>
+                <strong>Terminer la journée</strong><span>Clique sur le bouton de fin avec OK automatique.</span>
+              </div>
+            </label>
+          </div>
 
-                <div class="section-divider"></div>
-
-                <!-- Ligne 1 -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="firstButton">1. Premier bouton</label>
-                        <select id="firstButton">
-                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
-                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstButtonTime">Heure (HH:MM:SS)</label>
-                        <input type="time" id="firstButtonTime" step="1">
-                    </div>
-                </div>
-
-                <!-- Ligne 2 -->
-                <div id="secondButtonSelection" class="form-row" style="display:none;">
-                    <div class="form-group">
-                        <label for="secondButton">2. Deuxième bouton</label>
-                        <select id="secondButton">
-                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
-                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
-                        </select>
-                    </div>
-                    <div id="secondButtonTimeSelection" class="form-group">
-                        <label for="secondButtonTime">Heure (HH:MM:SS)</label>
-                        <input type="time" id="secondButtonTime" step="1">
-                    </div>
-                </div>
-
-                <!-- Ligne 3 -->
-                <div id="thirdButtonSelection" class="form-row" style="display:none;">
-                    <div class="form-group">
-                        <label for="thirdButton">3. Troisième bouton</label>
-                        <select id="thirdButton">
-                            <option value="playVisible">Bouton Play visible (.play-btn.visible)</option>
-                            <option value="btnTerminer">Terminer la journée (.btn-terminer)</option>
-                        </select>
-                    </div>
-                    <div id="thirdButtonTimeSelection" class="form-group">
-                        <label for="thirdButtonTime">Heure (HH:MM:SS)</label>
-                        <input type="time" id="thirdButtonTime" step="1">
-                    </div>
-                </div>
-
-                <div class="btn-row">
-                    <button id="generateCodeBtn" class="btn btn-primary">
-                        <span>⚡ Générer le script JS</span>
-                    </button>
-                </div>
-
-                <div class="form-group" style="margin-top: 10px;">
-                    <label for="generatedCode">
-                        Code généré
-                        <span class="badge-inline">
-                            <span class="badge-dot"></span>
-                            <span>Copier-coller dans F12 &gt; Console</span>
-                        </span>
-                    </label>
-                    <textarea id="generatedCode" readonly placeholder="// Le code apparaîtra ici après génération"></textarea>
-                    <div class="btn-row">
-                        <button id="copyCodeBtn" class="btn btn-ghost">
-                            <span>📋 Copier le code</span>
-                        </button>
-                    </div>
-                    <div class="hint-line">
-                        <span class="hint-pill">Tip</span>
-                        <span>Ouvre la page de suivi temps, F12 &gt; Console, colle le script, Enter.</span>
-                    </div>
-                </div>
+          <div class="section-label">Horaires</div>
+          <div class="steps">
+            <div class="step" id="step-startShift">
+              <div class="step-head"><div class="step-title"><span class="num">1</span> Heure du début shift</div><div class="step-badge">Play visible</div></div>
+              <div class="time-wrap"><input type="time" id="time-startShift" step="1"></div>
             </div>
+            <div class="step" id="step-startLunch">
+              <div class="step-head"><div class="step-title"><span class="num">2</span> Heure du début pause dej</div><div class="step-badge">Play visible</div></div>
+              <div class="time-wrap"><input type="time" id="time-startLunch" step="1"></div>
+            </div>
+            <div class="step" id="step-endLunch">
+              <div class="step-head"><div class="step-title"><span class="num">3</span> Heure de fin pause dej</div><div class="step-badge">Play visible</div></div>
+              <div class="time-wrap"><input type="time" id="time-endLunch" step="1"></div>
+            </div>
+            <div class="step" id="step-endDay">
+              <div class="step-head"><div class="step-title"><span class="num">4</span> Heure de fin de journée</div><div class="step-badge">OK auto</div></div>
+              <div class="time-wrap"><input type="time" id="time-endDay" step="1"></div>
+            </div>
+          </div>
+
+          <div class="tool-row">
+            <button class="btn btn-primary" id="generateCodeBtn">⚡ Générer le script JS</button>
+            <button class="btn btn-secondary" id="copyCodeBtn">📋 Copier le code</button>
+          </div>
+
+          <div class="result-head">
+            <div>
+              <div class="panel-title" style="font-size:1rem;">Code généré</div>
+              <div class="caption">Le dernier script généré apparaît ici.</div>
+            </div>
+          </div>
+          <textarea id="generatedCode" readonly placeholder="// Ton script apparaîtra ici..."></textarea>
+        </div>
+      </section>
+
+      <aside class="side-stack">
+        <section class="mini">
+          <div class="mini-body">
+            <div class="panel-title">Historique des actions programmées récemment</div>
+            <div class="panel-sub">Chaque entrée sert de modèle réutilisable. Tu ouvres, tu modifies les heures, tu valides, et le nouveau code est copié direct.</div>
+            <div class="history-topbar">
+              <button class="btn btn-secondary" id="clearHistoryBtn" type="button">🗑️ Vider l’historique</button>
+            </div>
+            <div class="history-list" id="historyList">
+              <div class="history-empty">Aucune action programmée récemment.</div>
+            </div>
+          </div>
         </section>
 
-        <!-- ============ CARD 2 : EXTINCTION PC ============ -->
-        <section class="card card-secondary">
-            <div class="card-inner">
-                <div class="card-header">
-                    <div>
-                        <div class="card-title">
-                            <span class="card-title-icon">💻</span>
-                            Extinction programmée du PC
-                        </div>
-                        <div class="card-subtitle">
-                            Génère la commande Windows <span class="kbd">shutdown</span> à coller dans Exécuter / Terminal.
-                        </div>
-                    </div>
-                    <span class="pill">Windows only</span>
-                </div>
-
-                <div class="form-group">
-                    <label for="shutdownTime">
-                        Heure d'extinction
-                        <span class="hint">Même jour, format 24h</span>
-                    </label>
-                    <input type="time" id="shutdownTime" step="1">
-                </div>
-
-                <div class="btn-row">
-                    <button id="generateShutdownCodeBtn" class="btn btn-primary">
-                        <span>⏱ Générer la commande</span>
-                    </button>
-                </div>
-
-                <div class="form-group" style="margin-top: 10px;">
-                    <label for="shutdownCode">
-                        Commande générée
-                        <span class="badge-inline">
-                            <span class="badge-dot" style="background: var(--danger);"></span>
-                            <span>À utiliser avec précaution</span>
-                        </span>
-                    </label>
-                    <textarea id="shutdownCode" readonly placeholder="shutdown -s -t 3600"></textarea>
-                    <div class="btn-row">
-                        <button id="copyShutdownCodeBtn" class="btn btn-ghost">
-                            <span>📋 Copier la commande</span>
-                        </button>
-                    </div>
-                    <div class="hint-line">
-                        <span class="hint-pill">Utilisation</span>
-                        <span>
-                            <span class="kbd">Win + R</span> → tape la commande → <span class="kbd">Entrée</span>.
-                        </span>
-                    </div>
-                </div>
+        <section class="mini">
+          <div class="mini-body">
+            <div class="panel-title">Extinction programmée du PC</div>
+            <div class="panel-sub">Partie gardée, sans toucher à ta logique.</div>
+            <div class="steps" style="margin-top:14px;">
+              <div class="step active" style="display:block;">
+                <div class="step-head"><div class="step-title"><span class="num">⏱</span> Heure d’extinction</div></div>
+                <div class="time-wrap"><input type="time" id="shutdownTime" step="1"></div>
+              </div>
             </div>
+            <div class="tool-row">
+              <button class="btn btn-primary" id="generateShutdownCodeBtn">Générer la commande</button>
+              <button class="btn btn-secondary" id="copyShutdownCodeBtn">Copier la commande</button>
+            </div>
+            <textarea id="shutdownCode" readonly style="min-height:110px;margin-top:14px;" placeholder="shutdown -s -t 3600"></textarea>
+          </div>
         </section>
-    </main>
+      </aside>
+    </div>
 
-    <footer>By RoberiX · Time Tracking Survivor Edition</footer>
-</div>
+    <div class="footer">By RoberiX · Automaka TT Ultra</div>
+  </div>
 
-<script>
-    // === Références DOM principales ===
-    const actionType = document.getElementById('actionType');
-    const firstButton = document.getElementById('firstButton');
-    const secondButton = document.getElementById('secondButton');
-    const thirdButton = document.getElementById('thirdButton');
+  <script>
+    const ACTIONS = [
+      { key: 'startShift', label: 'Début shift', type: 'playVisible', order: 1 },
+      { key: 'startLunch', label: 'Début pause dej', type: 'playVisible', order: 2 },
+      { key: 'endLunch', label: 'Fin pause dej', type: 'playVisible', order: 3 },
+      { key: 'endDay', label: 'Terminer la journée', type: 'dayTerminer', order: 4 }
+    ];
 
-    const secondButtonSelection = document.getElementById('secondButtonSelection');
-    const secondButtonTimeSelection = document.getElementById('secondButtonTimeSelection');
-    const thirdButtonSelection = document.getElementById('thirdButtonSelection');
-    const thirdButtonTimeSelection = document.getElementById('thirdButtonTimeSelection');
-
-    const generateCodeBtn = document.getElementById('generateCodeBtn');
+    const actionChecks = document.querySelectorAll('.action-check');
     const generatedCode = document.getElementById('generatedCode');
-    const copyCodeBtn = document.getElementById('copyCodeBtn');
+    const historyList = document.getElementById('historyList');
 
-    const generateShutdownCodeBtn = document.getElementById('generateShutdownCodeBtn');
-    const shutdownCode = document.getElementById('shutdownCode');
+    function syncSteps() {
+      actionChecks.forEach(input => {
+        const step = document.getElementById(input.dataset.step);
+        if (step) step.classList.toggle('active', input.checked);
+      });
+    }
+    actionChecks.forEach(input => input.addEventListener('change', syncSteps));
+
+    function formatDateTime(date) {
+      return new Intl.DateTimeFormat('fr-FR', { dateStyle: 'medium', timeStyle: 'short' }).format(date);
+    }
+
+    function buildPlayVisibleBlock(which, timeVal, label){
+      return `
+var ${which}Time = new Date();
+${which}Time.setHours(... "${timeVal}".split(':'));
+setTimeout(function() {
+    var btns = document.querySelectorAll('.play-btn.visible');
+    var targetBtn = null;
+    for (var i = 0; i < btns.length; i++) {
+        var btn = btns[i];
+        var isVisible = btn.offsetParent !== null;
+        var isDisabled = btn.disabled || btn.hasAttribute('disabled');
+        if (isVisible && !isDisabled) {
+            targetBtn = btn;
+            break;
+        }
+    }
+    if (targetBtn) {
+        targetBtn.click();
+        console.log("${which} : ${label} -> bouton Play visible cliqué (.play-btn.visible)");
+    } else {
+        console.log("${which} : ${label} -> aucun bouton Play visible et cliquable trouvé");
+    }
+}, ${which}Time.getTime() - new Date().getTime());
+
+`;
+    }
+
+    function buildTerminerBlock(which, timeVal, label){
+      return `
+var ${which}Time = new Date();
+${which}Time.setHours(... "${timeVal}".split(':'));
+setTimeout(function() {
+    var __origConfirm__ = window.confirm;
+    window.confirm = function(){ return true; };
+    console.log("${which} : ${label} -> confirm() forcé à OK pendant 10s");
+
+    var btn = document.querySelector('.btn-terminer');
+    if (btn) {
+        btn.click();
+        console.log("${which} : ${label} -> bouton 'Terminer la journée' cliqué (.btn-terminer)");
+    } else {
+        console.log("${which} : ${label} -> bouton 'Terminer la journée' introuvable (.btn-terminer)");
+    }
+
+    setTimeout(function(){
+        window.confirm = __origConfirm__;
+        console.log("${which} : confirm() restauré");
+    }, 10000);
+}, ${which}Time.getTime() - new Date().getTime());
+
+`;
+    }
+
+    function buildActionScript(which, action, timeVal) {
+      return action.type === 'dayTerminer'
+        ? buildTerminerBlock(which, timeVal, action.label)
+        : buildPlayVisibleBlock(which, timeVal, action.label);
+    }
+
+    function getSelectedActions() {
+      return ACTIONS
+        .filter(action => document.querySelector(`.action-check[value="${action.key}"]`).checked)
+        .sort((a, b) => a.order - b.order);
+    }
+
+    function getHistory() {
+      try { return JSON.parse(localStorage.getItem('automaka_history_v2') || '[]'); }
+      catch { return []; }
+    }
+    function saveHistory(history) {
+      localStorage.setItem('automaka_history_v2', JSON.stringify(history.slice(0, 25)));
+    }
+
+    function makeHistoryTitle(actionsMeta) {
+      const labels = actionsMeta.map(a => a.label);
+      const count = labels.length;
+      const prefix = count === 1 ? 'Simple action' : count === 2 ? 'Double action' : count === 3 ? 'Triple action' : count + ' actions';
+      return `${prefix} : ${labels.join(' + ')}`;
+    }
+
+    function copyText(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+      return new Promise((resolve, reject) => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); resolve(); }
+        catch (err) { reject(err); }
+        finally { document.body.removeChild(ta); }
+      });
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;').replaceAll("'", '&#039;');
+    }
+
+    function saveHistoryEntry(entry) {
+      const history = getHistory();
+      history.unshift(entry);
+      saveHistory(history);
+      renderHistory();
+    }
+
+    function renderHistory() {
+      const history = getHistory();
+      if (!history.length) {
+        historyList.innerHTML = '<div class="history-empty">Aucune action programmée récemment.</div>';
+        return;
+      }
+
+      historyList.innerHTML = history.map((item, index) => `
+        <div class="history-item" data-index="${index}">
+          <button class="history-toggle" type="button">
+            <div class="history-meta">
+              <div class="history-title">${escapeHtml(item.title)}</div>
+              <div class="history-date">${escapeHtml(item.createdAtLabel)}</div>
+            </div>
+            <div class="history-arrow">▾</div>
+          </button>
+
+          <div class="history-content">
+            <div class="history-summary">
+              ${item.actionsMeta.map(action => `
+                <div class="history-summary-row">
+                  <div class="history-summary-label">${escapeHtml(action.label)}</div>
+                  <div class="history-summary-time">${escapeHtml(action.time)}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="history-edit-grid">
+              ${item.actionsMeta.map(action => `
+                <div class="history-edit-row">
+                  <div>
+                    <div class="history-time-label">${escapeHtml(action.label)}</div>
+                    <div class="history-mini-note">Modifie seulement l’heure ici</div>
+                  </div>
+                  <input class="history-time-input" type="time" step="1" value="${escapeHtml(action.time)}" data-key="${escapeHtml(action.key)}">
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="history-actions">
+              <button class="btn btn-secondary history-copy" type="button">📋 Copier</button>
+              <button class="btn btn-secondary history-update" type="button">⚡ Valider les nouveaux horaires</button>
+              <button class="btn btn-secondary history-toggle-code" type="button">👁️ Afficher le code</button>
+              <button class="btn btn-secondary history-delete" type="button">🗑️ Supprimer cette entrée</button>
+            </div>
+
+            <pre class="history-pre hidden-code">${escapeHtml(item.code)}</pre>
+          </div>
+        </div>
+      `).join('');
+
+      historyList.querySelectorAll('.history-toggle').forEach(btn => {
+        btn.addEventListener('click', () => btn.closest('.history-item').classList.toggle('open'));
+      });
+
+      historyList.querySelectorAll('.history-copy').forEach((btn, index) => {
+        btn.addEventListener('click', async () => {
+          const item = getHistory()[index];
+          if (!item) return;
+          await copyText(item.code);
+          generatedCode.value = item.code;
+          alert('Code copié.');
+        });
+      });
+
+      historyList.querySelectorAll('.history-delete').forEach((btn, index) => {
+        btn.addEventListener('click', () => {
+          const history = getHistory();
+          history.splice(index, 1);
+          saveHistory(history);
+          renderHistory();
+        });
+      });
+
+      historyList.querySelectorAll('.history-toggle-code').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const itemEl = btn.closest('.history-item');
+          const pre = itemEl.querySelector('.history-pre');
+          const hidden = pre.classList.toggle('hidden-code');
+          btn.textContent = hidden ? '👁️ Afficher le code' : '🙈 Masquer le code';
+        });
+      });
+
+      historyList.querySelectorAll('.history-update').forEach((btn, index) => {
+        btn.addEventListener('click', async () => {
+          const history = getHistory();
+          const item = history[index];
+          const itemEl = btn.closest('.history-item');
+          if (!item) return;
+
+          const newActionsMeta = item.actionsMeta.map(action => {
+            const input = itemEl.querySelector(`.history-time-input[data-key="${action.key}"]`);
+            return { ...action, time: input ? input.value : action.time };
+          });
+
+          for (const action of newActionsMeta) {
+            if (!action.time) {
+              alert(`Choisis l'heure pour : ${action.label}.`);
+              return;
+            }
+          }
+
+          let newCode = '';
+          newActionsMeta.forEach((action, i) => {
+            newCode += buildActionScript(`action${i + 1}`, action, action.time);
+          });
+          newCode = newCode.trim();
+
+          item.actionsMeta = newActionsMeta;
+          item.title = makeHistoryTitle(newActionsMeta);
+          item.createdAt = new Date().toISOString();
+          item.createdAtLabel = formatDateTime(new Date());
+          item.code = newCode;
+
+          history[index] = item;
+          saveHistory(history);
+          generatedCode.value = newCode;
+          await copyText(newCode);
+          renderHistory();
+
+          const reopened = historyList.querySelector(`.history-item[data-index="${index}"]`);
+          if (reopened) reopened.classList.add('open');
+
+          alert('Nouveau code généré et copié.');
+        });
+      });
+    }
+
+    document.getElementById('generateCodeBtn').addEventListener('click', () => {
+      const selectedActions = getSelectedActions();
+      if (!selectedActions.length) {
+        alert("Choisis au moins une action.");
+        return;
+      }
+
+      const actionsMeta = [];
+      let code = '';
+      for (let i = 0; i < selectedActions.length; i++) {
+        const action = selectedActions[i];
+        const timeVal = document.getElementById(`time-${action.key}`).value;
+        if (!timeVal) {
+          alert(`Choisis l'heure pour : ${action.label}.`);
+          return;
+        }
+        actionsMeta.push({ ...action, time: timeVal });
+        code += buildActionScript(`action${i + 1}`, action, timeVal);
+      }
+
+      code = code.trim();
+      generatedCode.value = code;
+
+      saveHistoryEntry({
+        title: makeHistoryTitle(actionsMeta),
+        createdAt: new Date().toISOString(),
+        createdAtLabel: formatDateTime(new Date()),
+        actionsMeta,
+        code
+      });
+    });
+
+    document.getElementById('copyCodeBtn').addEventListener('click', async () => {
+      if (!generatedCode.value.trim()) {
+        alert("Aucun code à copier pour l'instant.");
+        return;
+      }
+      await copyText(generatedCode.value);
+      alert('Code copié.');
+    });
+
+    document.getElementById('clearHistoryBtn').addEventListener('click', () => {
+      if (!confirm("Vider tout l'historique ?")) return;
+      localStorage.removeItem('automaka_history_v2');
+      renderHistory();
+    });
+
     const shutdownTimeInput = document.getElementById('shutdownTime');
-    const copyShutdownCodeBtn = document.getElementById('copyShutdownCodeBtn');
-
-    // === Gestion du type d'action (simple / double / triple) ===
-    actionType.addEventListener('change', function () {
-        const action = this.value;
-
-        if (action === 'simple') {
-            secondButtonSelection.style.display = 'none';
-            secondButtonTimeSelection.style.display = 'none';
-            thirdButtonSelection.style.display = 'none';
-            thirdButtonTimeSelection.style.display = 'none';
-        } else if (action === 'double') {
-            secondButtonSelection.style.display = 'grid';
-            secondButtonTimeSelection.style.display = 'block';
-            thirdButtonSelection.style.display = 'none';
-            thirdButtonTimeSelection.style.display = 'none';
-        } else if (action === 'triple') {
-            secondButtonSelection.style.display = 'grid';
-            secondButtonTimeSelection.style.display = 'block';
-            thirdButtonSelection.style.display = 'grid';
-            thirdButtonTimeSelection.style.display = 'block';
-        }
+    const shutdownCode = document.getElementById('shutdownCode');
+    document.getElementById('generateShutdownCodeBtn').addEventListener('click', () => {
+      const now = new Date();
+      const shutdownTime = shutdownTimeInput.value;
+      if (!shutdownTime) {
+        alert("Veuillez entrer une heure pour l'extinction.");
+        return;
+      }
+      const parts = shutdownTime.split(':');
+      const shutdownDate = new Date();
+      shutdownDate.setHours(parts[0], parts[1], parts[2] || 0);
+      const diff = shutdownDate.getTime() - now.getTime();
+      if (diff <= 0) {
+        alert("L'heure d'extinction doit être après l'heure actuelle.");
+        return;
+      }
+      shutdownCode.value = `shutdown -s -t ${Math.floor(diff / 1000)}`;
+    });
+    document.getElementById('copyShutdownCodeBtn').addEventListener('click', async () => {
+      if (!shutdownCode.value.trim()) {
+        alert("Aucune commande à copier pour l'instant.");
+        return;
+      }
+      await copyText(shutdownCode.value);
+      alert('Commande copiée.');
     });
 
-
-    // === Génération du script JS pour les clics programmés ===
-    generateCodeBtn.addEventListener('click', function () {
-        const action = actionType.value;
-
-        const firstButtonId = firstButton.value;
-        const firstButtonTimeVal = document.getElementById('firstButtonTime').value;
-
-        const secondButtonId = secondButton.value;
-        const secondButtonTimeVal = document.getElementById('secondButtonTime').value;
-
-        const thirdButtonId = thirdButton.value;
-        const thirdButtonTimeVal = document.getElementById('thirdButtonTime').value;
-
-        if (!firstButtonTimeVal) {
-            alert("Veuillez saisir l'heure du premier bouton.");
-            return;
-        }
-
-        if ((action === 'double' || action === 'triple') && !secondButtonTimeVal) {
-            alert("Veuillez saisir l'heure du deuxième bouton.");
-            return;
-        }
-
-        if (action === 'triple' && !thirdButtonTimeVal) {
-            alert("Veuillez saisir l'heure du troisième bouton.");
-            return;
-        }
-
-        let code = '';
-
-        code += `(function() {
-`;
-        code += `  var AUTO_TT_VERSION = "2026.04-btn-visible";
-`;
-        code += `  console.log("[AUTO TT] Script chargé - version " + AUTO_TT_VERSION);
-
-`;
-
-        code += `  function getDelayMs(timeStr) {
-`;
-        code += `    var now = new Date();
-`;
-        code += `    var target = new Date();
-`;
-        code += `    target.setHours(...timeStr.split(':'));
-`;
-        code += `    var diff = target.getTime() - now.getTime();
-`;
-        code += `    return diff > 0 ? diff : 0;
-`;
-        code += `  }
-
-`;
-
-        code += `  function getVisiblePlayButton() {
-`;
-        code += `    var btns = document.querySelectorAll('.play-btn.visible');
-`;
-        code += `    for (var i = 0; i < btns.length; i++) {
-`;
-        code += `      if (!btns[i].disabled && btns[i].offsetParent !== null) {
-`;
-        code += `        return btns[i];
-`;
-        code += `      }
-`;
-        code += `    }
-`;
-        code += `    return null;
-`;
-        code += `  }
-
-`;
-
-        code += `  function clickPlayVisible(label) {
-`;
-        code += `    var btn = getVisiblePlayButton();
-`;
-        code += `    if (btn) {
-`;
-        code += `      btn.click();
-`;
-        code += `      console.log(label + " : bouton Play visible cliqué", btn);
-`;
-        code += `    } else {
-`;
-        code += `      console.log(label + " : aucun bouton .play-btn.visible cliquable trouvé");
-`;
-        code += `    }
-`;
-        code += `  }
-
-`;
-
-        code += `  function clickBtnTerminer(label) {
-`;
-        code += `    var btn = document.querySelector('.btn-terminer');
-`;
-        code += `    if (!btn) {
-`;
-        code += `      console.log(label + " : bouton .btn-terminer introuvable");
-`;
-        code += `      return;
-`;
-        code += `    }
-`;
-        code += `    var __origConfirm__ = window.confirm;
-`;
-        code += `    window.confirm = function(){ return true; };
-`;
-        code += `    console.log(label + " : confirm() forcé à OK pendant 10s");
-`;
-        code += `    btn.click();
-`;
-        code += `    console.log(label + " : bouton 'Terminer la journée' cliqué", btn);
-`;
-        code += `    setTimeout(function(){
-`;
-        code += `      window.confirm = __origConfirm__;
-`;
-        code += `      console.log(label + " : confirm() restauré");
-`;
-        code += `    }, 10000);
-`;
-        code += `  }
-
-`;
-
-        code += `  function scheduleAction(label, type, timeStr) {
-`;
-        code += `    var delay = getDelayMs(timeStr);
-`;
-        code += `    console.log(label + " programmé pour " + timeStr + " (dans " + delay + " ms)");
-`;
-        code += `    setTimeout(function() {
-`;
-        code += `      if (type === 'playVisible') {
-`;
-        code += `        clickPlayVisible(label);
-`;
-        code += `      } else if (type === 'btnTerminer') {
-`;
-        code += `        clickBtnTerminer(label);
-`;
-        code += `      }
-`;
-        code += `    }, delay);
-`;
-        code += `  }
-
-`;
-
-        function addSchedule(which, btnId, timeVal) {
-            code += `  scheduleAction("${which}", "${btnId}", "${timeVal}");
-`;
-        }
-
-        addSchedule('firstButton', firstButtonId, firstButtonTimeVal);
-
-        if (action === 'double' || action === 'triple') {
-            addSchedule('secondButton', secondButtonId, secondButtonTimeVal);
-        }
-
-        if (action === 'triple') {
-            addSchedule('thirdButton', thirdButtonId, thirdButtonTimeVal);
-        }
-
-        code += `})();`;
-
-        generatedCode.value = code;
-    });
-
-    // === Copie du code généré ===
-    copyCodeBtn.addEventListener('click', function () {
-        if (!generatedCode.value.trim()) {
-            alert("Aucun code à copier pour l'instant.");
-            return;
-        }
-        generatedCode.select();
-        document.execCommand('copy');
-        alert('Code copié dans le presse-papiers. Tu peux le coller dans la console.');
-    });
-
-    // === Génération de la commande d'extinction ===
-    generateShutdownCodeBtn.addEventListener('click', function () {
-        const now = new Date();
-        const shutdownTime = shutdownTimeInput.value;
-
-        if (!shutdownTime) {
-            alert("Veuillez entrer une heure pour l'extinction.");
-            return;
-        }
-
-        const timeParts = shutdownTime.split(':');
-        const shutdownDate = new Date();
-        shutdownDate.setHours(timeParts[0]);
-        shutdownDate.setMinutes(timeParts[1]);
-        shutdownDate.setSeconds(timeParts[2] || 0);
-
-        const timeDifference = shutdownDate.getTime() - now.getTime();
-
-        if (timeDifference <= 0) {
-            alert("L'heure d'extinction doit être après l'heure actuelle.");
-            return;
-        }
-
-        const totalSeconds = Math.floor(timeDifference / 1000);
-        const shutdownCommand = `shutdown -s -t ${totalSeconds}`;
-        shutdownCode.value = shutdownCommand;
-    });
-
-    // === Copie de la commande d'extinction ===
-    copyShutdownCodeBtn.addEventListener('click', function () {
-        if (!shutdownCode.value.trim()) {
-            alert("Aucune commande à copier pour l'instant.");
-            return;
-        }
-        shutdownCode.select();
-        document.execCommand('copy');
-        alert('La commande a été copiée dans le presse-papiers.');
-    });
-</script>
+    syncSteps();
+    renderHistory();
+  </script>
 </body>
 </html>
-
-
